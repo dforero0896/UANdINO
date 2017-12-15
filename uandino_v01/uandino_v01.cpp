@@ -27,7 +27,9 @@ double Ue1, Ue2, Ue3, Umu1, Umu2, Umu3, Ut1, Ut2, Ut3;
 gsl_matrix *CKM;
 
 //Functions
-
+float sun_density(float r){
+  return (200.)*exp(-abs(path[i])/66000); //g/cm^3
+}
 float density_to_potential(float dty, bool antineutrino){
   float to_return = (1./sqrt(2))*dty*1e-3*8.96189e-47*1e9   /1.672e-27;
   if(antineutrino){
