@@ -28,7 +28,13 @@ gsl_matrix *CKM;
 
 //Functions
 float sun_density(float r){
-  return (200.)*exp(-abs(path[i])/66000); //g/cm^3
+  return (200.)*exp(-abs(r)/66000); //g/cm^3
+}
+float fig_1_density(float r){
+  float dist = abs(r-(-6371));
+  if(dist < 2885.){return 1.7e-13;}
+  else if(dist>=2885. && dist<=2885.+6972.){return 4.35e-13;}
+  else {return 1.7e-13;}
 }
 float density_to_potential(float dty, bool antineutrino){
   float to_return = (1./sqrt(2))*dty*1e-3*8.96189e-47*1e9   /1.672e-27;
@@ -45,23 +51,16 @@ double longitude_units_conversion(double lon_in_km){
 double deg2rad(double deg){
 	return deg*PI/180.;
 }
-void linspace(double array[], double max, double min, int arraylen){
-	int i;
+vector<double> linspace(double min, double max, int arraylen){
+  vector<double> to_return;
+  to_return.reserve(arraylen);
 	double step=(max-min)/arraylen;
-	for(i=0; i<=arraylen; i++){
-		array[i]=min+i*step;
+	for(int i=0; i<=arraylen; i++){
+		to_return.push_back(min+i*step);
 	}
+  return to_return;
 }
-void densityStep ( double *fill , double *dist, int arraysize){
-
-	int i;
-	for(i=0;i<arraysize;i++){
-		if(dist[i] < 2885.){fill[i]=1.7e-13;}
-		else {fill[i] = 4.4e-13;}
-	}
-
-}
-
+/*
 vector<double> density_array_from_key (string key, int steps){
 	vector<double> potential;
 	potential.reserve(steps);
@@ -117,6 +116,7 @@ vector<double> density_array_from_key (string key, int steps){
 	}
 	return potential;
 }
+*/
 void fill_real_matrix(gsl_matrix *empty, double elem_11, double elem_12, double elem_13, double elem_21, double elem_22, double elem_23, double elem_31, double elem_32, double elem_33){
   gsl_matrix_set(empty, 0, 0, elem_11);
   gsl_matrix_set(empty, 0, 1, elem_12);
@@ -373,17 +373,21 @@ void calculateProbabilities(){
   gsl_matrix_complex *operator_product = gsl_matrix_complex_alloc(3, 3);
   generate_real_identity(Id);
   copy_to_complex_from_real(Id, operator_product);
-
+  //float coord_init = -6371.;
+  //float coord_end = 6371.;
+  float coord_init = -6.96e5;
+  float coord_end = 6.96e5;
   int N=1000;
-	int Steps=1000;
-
+	int Steps=16000;
+  float step_len = abs(coord_end-coord_init)/Steps;
 	double EnergyLins[N];
-	double exps[N];
-	linspace(exps, 5, 12, N);
+	vector<double> exps = linspace(5, 12, N);
+
 	for(int i=0;i<N;i++){
 		EnergyLins[i]=pow(10, exps[i]);
 	}
-	vector<double> DensityStep = density_array_from_key("sun", Steps);
+  //vector<double> spatial_path = linspace(-6371., 6371., Steps); //for Earth plots
+  //vector<double> spatial_path = linspace(-6.96e5, 6.96e5, Steps); //for Sun plot
 	omp_set_num_threads(threads);
 	int i,k;
 	double Probabilities[N][3];
@@ -396,12 +400,13 @@ void calculateProbabilities(){
 	  gsl_matrix_complex *operator_product = gsl_matrix_complex_alloc(3, 3);
 	  generate_real_identity(Id);
 	  copy_to_complex_from_real(Id, operator_product);
+    double coord = coord_init;
 		#pragma omp parallel for private(k)
 	  for(k=0;k<Steps;k++){
-	    double density=DensityStep[k];
-			//double len = (2885.+6972.)/Steps; //When figure 1 is plotted
-			double len = 1;//12742./Steps; //When figure 4 or 6 are plotted
-			//double len = 2*6.96e5/1000/Steps; //When sun thing is plotted
+	    //double density=fig_1_density(coord);
+      double density = density_to_potential(sun_density(coord),0);
+      coord += step_len;
+			double len = step_len;
 	    gsl_matrix_complex *iter_operator = gsl_matrix_complex_alloc(3,3);
 	    *iter_operator=calculateOperator(energy, density, longitude_units_conversion(len));
 	    gsl_matrix_complex *operator_product_copy = gsl_matrix_complex_alloc(3,3);
@@ -429,8 +434,10 @@ void calculateProbabilities(){
   myfile.close();
   ofstream potentialfile;
   potentialfile.open("potentialTest.csv");
+  double coord = coord_init;
   for(k=0;k<Steps;k++){
-    potentialfile << DensityStep[k] << endl;
+    coord += step_len;
+    potentialfile << density_to_potential(sun_density(coord),0) << endl;
   }
   potentialfile.close();
 }

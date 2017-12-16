@@ -28,7 +28,7 @@ gsl_matrix *CKM;
 
 //Functions
 float sun_density(float r){
-  return (200.)*exp(-abs(path[i])/66000); //g/cm^3
+  return (200.)*exp(-abs(r)/66000); //g/cm^3
 }
 float density_to_potential(float dty, bool antineutrino){
   float to_return = (1./sqrt(2))*dty*1e-3*8.96189e-47*1e9   /1.672e-27;
@@ -375,7 +375,7 @@ void calculateProbabilities(){
   copy_to_complex_from_real(Id, operator_product);
 
   int N=1000;
-	int Steps=1000;
+	int Steps=10000;
 
 	double EnergyLins[N];
 	double exps[N];
@@ -383,7 +383,7 @@ void calculateProbabilities(){
 	for(int i=0;i<N;i++){
 		EnergyLins[i]=pow(10, exps[i]);
 	}
-	vector<double> DensityStep = density_array_from_key("sun", Steps);
+	vector<double> DensityStep = density_array_from_key("fig_1", Steps);
 	omp_set_num_threads(threads);
 	int i,k;
 	double Probabilities[N][3];
