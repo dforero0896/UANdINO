@@ -378,7 +378,7 @@ void calculateProbabilities(){
   float coord_init = -6.96e5;
   float coord_end = 6.96e5;
   int N=1000;
-	int Steps=1500000;
+	int Steps=16000;
   float step_len = abs(coord_end-coord_init)/Steps;
 	double EnergyLins[N];
 	vector<double> exps = linspace(5, 12, N);
