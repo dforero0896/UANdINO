@@ -1,6 +1,3 @@
-/var/spool/torque/mom_priv/jobs/177608.clustermaster.uniandes.edu.co.SC: line 43: 26132 Killed                  ./uandino_v02.o
-mv: cannot stat `probsTest.csv': No such file or directory
-mv: cannot stat `potentialTest.csv': No such file or directory
 
 
 (hpcstats) Getting modules

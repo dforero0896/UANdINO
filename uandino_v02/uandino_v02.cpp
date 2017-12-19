@@ -377,8 +377,8 @@ void calculateProbabilities(){
   //float coord_end = 6371.;
   float coord_init = -6.96e5;
   float coord_end = 6.96e5;
-  int N=1000;
-	int Steps=1500000;
+  int N=100;
+	int Steps=int(2*6.96e5);
   float step_len = abs(coord_end-coord_init)/Steps;
 	double EnergyLins[N];
 	vector<double> exps = linspace(5, 12, N);
@@ -388,12 +388,11 @@ void calculateProbabilities(){
 	}
   //vector<double> spatial_path = linspace(-6371., 6371., Steps); //for Earth plots
   //vector<double> spatial_path = linspace(-6.96e5, 6.96e5, Steps); //for Sun plot
-	omp_set_num_threads(threads);
+	omp_set_num_threads(16);
 	int i,k;
 	double Probabilities[N][3];
 	//double Probabilities[N];
 	#pragma omp parallel for private(i)
-
 	for(i=0;i<N;i++){
 	  double energy=EnergyLins[i];
 	  gsl_matrix *Id =gsl_matrix_alloc(3, 3);
@@ -440,6 +439,7 @@ void calculateProbabilities(){
     potentialfile << density_to_potential(sun_density(coord),0) << endl;
   }
   potentialfile.close();
+
 }
 int main(int argc, char const *argv[]) {
 		calculateProbabilities();
