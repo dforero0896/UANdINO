@@ -400,7 +400,7 @@ void calculateProbabilities(){
 	  for(k=0;k<Steps;k++){
 	    double density=DensityStep[k];
 			//double len = (2885.+6972.)/Steps; //When figure 1 is plotted
-			double len = 1;//12742./Steps; //When figure 4 or 6 are plotted
+			double len = 12742./Steps; //When figure 4 or 6 are plotted
 			//double len = 2*6.96e5/1000/Steps; //When sun thing is plotted
 	    gsl_matrix_complex *iter_operator = gsl_matrix_complex_alloc(3,3);
 	    *iter_operator=calculateOperator(energy, density, longitude_units_conversion(len));
