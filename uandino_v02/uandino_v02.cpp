@@ -40,6 +40,33 @@ float fig_1_density(float r){
   else if(dist>=2885. && dist<=2885.+6972.){return 4.35e-13;}
   else {return 1.7e-13;}
 }
+float fig_2_density(float r){
+  /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_2 of Ohlsonn's paper.*/
+  float dist = abs(r-(-6371));
+  if(dist < 2885.){return 1.7e-13;}
+  else if(dist>=2885. && dist<=2885.+6972.){return  2.1e-13;}
+  else {return 1.7e-13;}
+}
+float fig_3_density(float r){
+  /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_3 of Ohlsonn's paper.*/
+  float dist = abs(r-(-6371));
+  if(dist < 2885.){return 3.8e-14;}
+  else if(dist>=2885. && dist<=2885.+6972.){return  7.6e-14;}
+  else {return 3.8e-14;}
+}
+float fig_4_density(float r){
+  /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_4 of Ohlsonn's paper.*/
+  return 3e-13;
+}
+float fig_5_density(float r){
+  /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_5 of Ohlsonn's paper.*/
+  return 1.7e-13;
+}
+float fig_6_density(float r){
+  /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_6 of Ohlsonn's paper.*/
+  float dist = abs(r-(-6371));
+  return 3.8e-13*(1e-3 +dist/12742.);
+}
 float density_to_potential(float dty, bool antineutrino){
   /*Transforms density in g/cm**3 to potential in eV*/
   float to_return = (1./sqrt(2))*dty*1e-3*8.96189e-47*1e9   /1.672e-27;
@@ -357,7 +384,7 @@ void calculateProbabilities(){
   //float coord_init = 0;
   //float coord_end = 6.96e5;
   int N=1000; //Number of energy steps.
-	int Steps=100; //Number of spatial steps.
+	int Steps=1000; //Number of spatial steps.
   float step_len = abs(coord_end-coord_init)/Steps; //Longitude of each step in km.
 
   //Save a logspaced array with the energies.
@@ -387,7 +414,7 @@ void calculateProbabilities(){
     double coord = coord_init;
 		#pragma omp parallel for private(k)
 	  for(k=0;k<Steps;k++){
-	    double density=fig_1_density(coord); //eV
+	    double density=fig_6_density(coord); //eV
       //double density = density_to_potential(sun_density(coord),0);
       //Increase coordinate value.
       coord += step_len;
@@ -426,7 +453,7 @@ void calculateProbabilities(){
   double coord = coord_init;
   for(k=0;k<Steps;k++){
     coord += step_len;
-    potentialfile << density_to_potential(sun_density(coord),0) << endl;
+    potentialfile << fig_3_density(coord) << endl;
   }
   potentialfile.close();
 
