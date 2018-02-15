@@ -1,6 +1,7 @@
 #!/bin/bash
 
 
+
 g++ -fopenmp -o uandino_v02.o uandino_v02.cpp `gsl-config --cflags --libs`
 
 ./uandino_v02.o #> probsTest.csv
@@ -10,3 +11,4 @@ g++ -fopenmp -o uandino_v02.o uandino_v02.cpp `gsl-config --cflags --libs`
 #mpirun -n 2 ./spectra_sampling_MCMC.o
 
 python plotTheThing.py
+rm uandino_v02.o
