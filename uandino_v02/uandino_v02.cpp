@@ -9,6 +9,7 @@ using namespace std;
 #include <gsl/gsl_complex_math.h>
 #include <gsl/gsl_math.h>
 #include<gsl/gsl_blas.h>
+#include<gsl/gsl_linalg.h>
 #include<string>
 #include<sstream>
 #include <omp.h>
@@ -17,8 +18,8 @@ using namespace std;
 //Mass differences
 //double dM32 = 3.2E-3; //eV^2
 //double dm21 = 0.0; //eV^2
-double dM32 = 2.45e-3;
-double dm21 = 7.53e-5;
+double dM32 = 2.45e-3 *1e6;//meV^2
+double dm21 = 7.53e-5*1e6;//meV^2
 //Vacuum mixing angles
 
 double thetaA = 45.; //Degrees
@@ -39,45 +40,45 @@ float sun_density(float r){
   float Gfoverhc3 = 1.1663787e-5;
   float ne = n0*exp(-r/r0);
   /*Returns the density of the Sun given a coordinate r, in km, from it's center*/
-  return sqrt(2.)*Gfoverhc3*ne*x*x*x*1e6*1e9;
+  return sqrt(2.)*Gfoverhc3*ne*x*x*x*1e6*1e9*1e3; //meV
 }
 float fig_1_density(float r){
   /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_1 of Ohlsonn's paper.*/
   float dist = abs(r-(-6371));
-  if(dist < 2885.){return 1.7e-13;}
-  else if(dist>=2885. && dist<=2885.+6972.){return 4.35e-13;}
-  else {return 1.7e-13;}
+  if(dist < 2885.){return 1.7e-13*1e3;}
+  else if(dist>=2885. && dist<=2885.+6972.){return 4.35e-13*1e3;}
+  else {return 1.7e-13*1e3;}
 }
 float fig_2_density(float r){
   /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_2 of Ohlsonn's paper.*/
   float dist = abs(r-(-6371));
-  if(dist < 2885.){return 1.7e-13;}
-  else if(dist>=2885. && dist<=2885.+6972.){return  2.1e-13;}
-  else {return 1.7e-13;}
+  if(dist < 2885.){return 1.7e-13*1e3;}
+  else if(dist>=2885. && dist<=2885.+6972.){return  2.1e-13*1e3;}
+  else {return 1.7e-13*1e3;}
 }
 float fig_3_density(float r){
   /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_3 of Ohlsonn's paper.*/
   float dist = abs(r-(-6371));
-  if(dist < 2885.){return 3.8e-14;}
-  else if(dist>=2885. && dist<=2885.+6972.){return  7.6e-14;}
-  else {return 3.8e-14;}
+  if(dist < 2885.){return 3.8e-14*1e3;}
+  else if(dist>=2885. && dist<=2885.+6972.){return  7.6e-14*1e3;}
+  else {return 3.8e-14*1e3;}
 }
 float fig_4_density(float r){
   /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_4 of Ohlsonn's paper.*/
-  return 3e-13;
+  return 3e-13*1e3;
 }
 float fig_5_density(float r){
   /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_5 of Ohlsonn's paper.*/
-  return 1.7e-13;
+  return 1.7e-13*1e3;
 }
 float fig_6_density(float r){
   /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_6 of Ohlsonn's paper.*/
   float dist = abs(r-(-6371));
-  return 3.8e-13*(1e-3 +dist/12742.);
+  return 3.8e-13*(1e-3 +dist/12742.)*1e3;
 }
 float density_to_potential(float dty, bool antineutrino){
-  /*Transforms density in g/cm**3 to potential in eV*/
-  float to_return = (1./sqrt(2))*dty*1e-3*8.96189e-47*1e9   /1.672e-27;
+  /*Transforms density in g/cm**3 to potential in meV*/
+  float to_return = 1e3*(1./sqrt(2))*dty*1e-3*8.96189e-47*1e9   /1.672e-27;
   if(antineutrino){
     return -1*to_return;
   }
@@ -87,7 +88,7 @@ float density_to_potential(float dty, bool antineutrino){
 }
 double longitude_units_conversion(double lon_in_km){
   /*Transforms distances in km*/
-	return lon_in_km*1e3/(1.972e-7);
+	return lon_in_km*1e3/(1.972e-7*1e3);
 }
 double deg2rad(double deg){
   /*Converts degrees to radians*/
@@ -409,7 +410,7 @@ void calculateProbabilities(){
 
   //Save a logspaced array with the energies.
 	double EnergyLins[N];
-	vector<double> exps = linspace(5, 12, N);
+	vector<double> exps = linspace(5, 15, N);
 	for(int i=0;i<N;i++){
 		EnergyLins[i]=pow(10, exps[i]);
 	}
@@ -431,7 +432,7 @@ void calculateProbabilities(){
     double coord = coord_init;
 		//#pragma omp parallel while private(k)
 	  while(coord<coord_end){
-	    double density=fig_1_density(coord); //eV
+	    double density=-fig_2_density(coord); //eV
       //double density = density_to_potential(sun_density(coord),0);
       //Increase coordinate value.
       coord += step_len;
@@ -457,22 +458,28 @@ void calculateProbabilities(){
 */
       //Operator unitarity
 
-/*     gsl_matrix_complex *unit_check = gsl_matrix_complex_alloc(3,3);
+     gsl_matrix_complex *unit_check = gsl_matrix_complex_alloc(3,3);
      gsl_matrix_complex *operator_product_copy_notr = gsl_matrix_complex_alloc(3,3);
      copy_to_complex_from_complex(operator_product, operator_product_copy_notr);
      gsl_matrix_complex *operator_product_copy_tr = gsl_matrix_complex_alloc(3,3);
      copy_to_complex_from_complex(operator_product, operator_product_copy_tr);
      gsl_blas_zgemm(CblasNoTrans, CblasConjTrans, gsl_complex_rect(1., 0), operator_product_copy_notr, operator_product_copy_tr, gsl_complex_rect(0., 0.),unit_check);
-     double the_one = GSL_REAL(gsl_matrix_complex_get(unit_check, 0, 0));
-     //cout << the_one << endl;
+     double the_one = sqrt(GSL_REAL(gsl_matrix_complex_get(unit_check, 0, 0)));
+     /*int sg;
+     int *sgnum = &sg;
+     gsl_permutation *p =gsl_permutation_alloc(3);
+     int z = gsl_linalg_complex_LU_decomp (operator_product_copy_notr, p, sgnum);
+     double the_one = GSL_REAL(gsl_linalg_complex_LU_det(operator_product_copy_notr,*sgnum));
+     gsl_permutation_free(p);*/
+     cout << the_one << endl;
      scale_complex_matrix(operator_product, gsl_complex_rect(1,0.), 1./the_one );
-     */
+
       //Free memory.
       gsl_matrix_complex_free(operator_product_copy);
 	    gsl_matrix_complex_free(iter_operator);
-      //gsl_matrix_complex_free(operator_product_copy_notr);
-      //gsl_matrix_complex_free(operator_product_copy_tr);
-      //gsl_matrix_complex_free(unit_check);
+      gsl_matrix_complex_free(operator_product_copy_notr);
+      gsl_matrix_complex_free(operator_product_copy_tr);
+      gsl_matrix_complex_free(unit_check);
 
 
 	  }
@@ -489,7 +496,7 @@ void calculateProbabilities(){
   myfile.open ("probsTest.csv");
 
 	for(i=0;i<N;i++){
-		myfile << EnergyLins[i] << "," << Probabilities[i][0] << "," << Probabilities[i][1] << "," << Probabilities[i][2] << endl;
+		myfile << EnergyLins[i]*1e-3 << "," << Probabilities[i][0] << "," << Probabilities[i][1] << "," << Probabilities[i][2] << endl;
 		//cout << EnergyLins[i] << "," << Probabilities[i] << endl;
 	}
  //Write file with potential values.

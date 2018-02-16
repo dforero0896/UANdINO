@@ -383,7 +383,7 @@ void calculateProbabilities(){
 	for(int i=0;i<N;i++){
 		EnergyLins[i]=pow(10, exps[i]);
 	}
-	vector<double> DensityStep = density_array_from_key("fig_1", Steps);
+	vector<double> DensityStep = density_array_from_key("fig_2", Steps);
 	omp_set_num_threads(threads);
 	int i,k;
 	double Probabilities[N][3];
@@ -398,7 +398,7 @@ void calculateProbabilities(){
 	  copy_to_complex_from_real(Id, operator_product);
 		#pragma omp parallel for private(k)
 	  for(k=0;k<Steps;k++){
-	    double density=DensityStep[k];
+	    double density=-DensityStep[k];
 			//double len = (2885.+6972.)/Steps; //When figure 1 is plotted
 			double len = 12742./Steps; //When figure 4 or 6 are plotted
 			//double len = 2*6.96e5/1000/Steps; //When sun thing is plotted
