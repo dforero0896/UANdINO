@@ -9,7 +9,6 @@ using namespace std;
 #include <gsl/gsl_complex_math.h>
 #include <gsl/gsl_math.h>
 #include<gsl/gsl_blas.h>
-#include<gsl/gsl_linalg.h>
 #include<string>
 #include<sstream>
 #include <omp.h>
@@ -18,8 +17,10 @@ using namespace std;
 //Mass differences
 double dM32 = 1e-4; //eV^2
 double dm21 = 1e-8; //eV^2
-//double dM32 = 2.45e-3 *1e6;//meV^2
-//double dm21 = 7.53e-5*1e6;//meV^2
+//double dM32 = 3.2E-3; //eV^2
+//double dm21 = 0.0; //eV^2
+//double dM32 = 2.45e-3;
+//double dm21 = 7.53e-5;
 //Vacuum mixing angles
 
 double thetaA = 45.; //Degrees
@@ -40,45 +41,45 @@ float sun_density(float r){
   float Gfoverhc3 = 1.1663787e-5;
   float ne = n0*exp(-r/r0);
   /*Returns the density of the Sun given a coordinate r, in km, from it's center*/
-  return sqrt(2.)*Gfoverhc3*ne*x*x*x*1e6*1e9*1e3; //meV
+  return sqrt(2.)*Gfoverhc3*ne*x*x*x*1e6*1e9;
 }
 float fig_1_density(float r){
   /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_1 of Ohlsonn's paper.*/
   float dist = abs(r-(-6371));
-  if(dist < 2885.){return 1.7e-13*1e3;}
-  else if(dist>=2885. && dist<=2885.+6972.){return 4.35e-13*1e3;}
-  else {return 1.7e-13*1e3;}
+  if(dist < 2885.){return 1.7e-13;}
+  else if(dist>=2885. && dist<=2885.+6972.){return 4.35e-13;}
+  else {return 1.7e-13;}
 }
 float fig_2_density(float r){
   /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_2 of Ohlsonn's paper.*/
   float dist = abs(r-(-6371));
-  if(dist < 2885.){return 1.7e-13*1e3;}
-  else if(dist>=2885. && dist<=2885.+6972.){return  2.1e-13*1e3;}
-  else {return 1.7e-13*1e3;}
+  if(dist < 2885.){return 1.7e-13;}
+  else if(dist>=2885. && dist<=2885.+6972.){return  2.1e-13;}
+  else {return 1.7e-13;}
 }
 float fig_3_density(float r){
   /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_3 of Ohlsonn's paper.*/
   float dist = abs(r-(-6371));
-  if(dist < 2885.){return 3.8e-14*1e3;}
-  else if(dist>=2885. && dist<=2885.+6972.){return  7.6e-14*1e3;}
-  else {return 3.8e-14*1e3;}
+  if(dist < 2885.){return 3.8e-14;}
+  else if(dist>=2885. && dist<=2885.+6972.){return  7.6e-14;}
+  else {return 3.8e-14;}
 }
 float fig_4_density(float r){
   /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_4 of Ohlsonn's paper.*/
-  return 3e-13*1e3;
+  return 3e-13;
 }
 float fig_5_density(float r){
   /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_5 of Ohlsonn's paper.*/
-  return 1.7e-13*1e3;
+  return 1.7e-13;
 }
 float fig_6_density(float r){
   /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_6 of Ohlsonn's paper.*/
   float dist = abs(r-(-6371));
-  return 3.8e-13*(1e-3 +dist/12742.)*1e3;
+  return 3.8e-13*(1e-3 +dist/12742.);
 }
 float density_to_potential(float dty, bool antineutrino){
-  /*Transforms density in g/cm**3 to potential in meV*/
-  float to_return = 1e3*(1./sqrt(2))*dty*1e-3*8.96189e-47*1e9   /1.672e-27;
+  /*Transforms density in g/cm**3 to potential in eV*/
+  float to_return = (1./sqrt(2))*dty*1e-3*8.96189e-47*1e9   /1.672e-27;
   if(antineutrino){
     return -1*to_return;
   }
@@ -88,7 +89,7 @@ float density_to_potential(float dty, bool antineutrino){
 }
 double longitude_units_conversion(double lon_in_km){
   /*Transforms distances in km*/
-	return lon_in_km*1e3/(1.972e-7*1e3);
+	return lon_in_km*1e3/(1.972e-7);
 }
 double deg2rad(double deg){
   /*Converts degrees to radians*/
@@ -376,16 +377,16 @@ void calculateProbabilities(){
   /*Writes a file with energies and all three probabilities*/
 	int threads =4;
   //CKM matrix elements calculated just once.
-  /*
+  ///*
 	double theta1=deg2rad(thetaA);
 	double theta2=deg2rad(thetaB);
 	double theta3=deg2rad(thetaC);
-  */
-  ///*
+  //*/
+  /*
   double theta1 = 0.78539816339744839;
   double theta2 = 0.1454258194533693;
   double theta3 = 0.5872523687443223;
-  //*/
+  */
   Ue1 = gsl_sf_cos(theta2)*gsl_sf_cos(theta3);
   Ue2 = gsl_sf_sin(theta3)*gsl_sf_cos(theta2);
   Ue3 = gsl_sf_sin(theta2);
@@ -405,18 +406,18 @@ void calculateProbabilities(){
   float coord_init = 0;
   float coord_end = 6.957e5;
   int N=1000; //Number of energy steps.
-	int Steps=10000; //Number of spatial steps.
+	int Steps=100; //Number of spatial steps.
   float step_len = abs(coord_end-coord_init)/Steps; //Longitude of each step in km.
 
   //Save a logspaced array with the energies.
 	double EnergyLins[N];
-	vector<double> exps = linspace(0, 20, N);
+	vector<double> exps = linspace(1, 12, N);
 	for(int i=0;i<N;i++){
 		EnergyLins[i]=pow(10, exps[i]);
 	}
 
 
-	omp_set_num_threads(16);//Number of threads to use.
+	omp_set_num_threads(4);//Number of threads to use.
 	int i,k;
 
 	long double Probabilities[N][3];//Array to save probabilities.
@@ -430,8 +431,9 @@ void calculateProbabilities(){
 	  generate_real_identity(Id);
 	  copy_to_complex_from_real(Id, operator_product);
     double coord = coord_init;
-		//#pragma omp parallel while private(k)
-	  while(coord<coord_end){
+		#pragma omp parallel for private(k)
+    for(k=0;k<Steps;k++){
+	  //while(coord<coord_end){
 	    double density=sun_density(coord); //eV
       //double density = density_to_potential(sun_density(coord),0);
       //Increase coordinate value.
@@ -446,44 +448,43 @@ void calculateProbabilities(){
 	    gsl_blas_zgemm(CblasNoTrans, CblasNoTrans, gsl_complex_rect(1., 0), iter_operator, operator_product_copy, gsl_complex_rect(0., 0.),operator_product);
 
       //Corrections
-      bool prob_corr=1;
-      bool unit_corr = 1;
-      bool det_corr= 0;
-      //Operator unitarity
-      if(unit_corr){
-        gsl_matrix_complex *unit_check = gsl_matrix_complex_alloc(3,3);
-        gsl_matrix_complex *operator_product_copy_notr = gsl_matrix_complex_alloc(3,3);
-        copy_to_complex_from_complex(operator_product, operator_product_copy_notr);
-        gsl_matrix_complex *operator_product_copy_tr = gsl_matrix_complex_alloc(3,3);
-        copy_to_complex_from_complex(operator_product, operator_product_copy_tr);
-        gsl_blas_zgemm(CblasNoTrans, CblasConjTrans, gsl_complex_rect(1., 0), operator_product_copy_notr, operator_product_copy_tr, gsl_complex_rect(0., 0.),unit_check);
-        double detId= GSL_REAL(gsl_matrix_complex_get(unit_check, 2, 2))*GSL_REAL(gsl_matrix_complex_get(unit_check, 1, 1))*GSL_REAL(gsl_matrix_complex_get(unit_check, 0, 0));
-        double the_one = sqrt(detId);
+            bool prob_corr=1;
+            bool unit_corr = 1;
+            bool det_corr= 0;
+            //Operator unitarity
+            if(unit_corr){
+              gsl_matrix_complex *unit_check = gsl_matrix_complex_alloc(3,3);
+              gsl_matrix_complex *operator_product_copy_notr = gsl_matrix_complex_alloc(3,3);
+              copy_to_complex_from_complex(operator_product, operator_product_copy_notr);
+              gsl_matrix_complex *operator_product_copy_tr = gsl_matrix_complex_alloc(3,3);
+              copy_to_complex_from_complex(operator_product, operator_product_copy_tr);
+              gsl_blas_zgemm(CblasNoTrans, CblasConjTrans, gsl_complex_rect(1., 0), operator_product_copy_notr, operator_product_copy_tr, gsl_complex_rect(0., 0.),unit_check);
+              double detId= GSL_REAL(gsl_matrix_complex_get(unit_check, 2, 2))*GSL_REAL(gsl_matrix_complex_get(unit_check, 1, 1))*GSL_REAL(gsl_matrix_complex_get(unit_check, 0, 0));
+              double the_one = sqrt(detId);
 
-        scale_complex_matrix(operator_product, gsl_complex_rect(1,0.), 1./the_one );
-        gsl_matrix_complex_free(operator_product_copy_notr);
-        gsl_matrix_complex_free(operator_product_copy_tr);
-        gsl_matrix_complex_free(unit_check);
+              scale_complex_matrix(operator_product, gsl_complex_rect(1,0.), 1./the_one );
+              gsl_matrix_complex_free(operator_product_copy_notr);
+              gsl_matrix_complex_free(operator_product_copy_tr);
+              gsl_matrix_complex_free(unit_check);
+            }
+
+           //Probability unitarity
+
+           if(prob_corr){
+             long double P_ee = gsl_complex_abs2(gsl_matrix_complex_get(operator_product, 0,0));
+             long double P_em = gsl_complex_abs2(gsl_matrix_complex_get(operator_product, 1,0));
+             long double P_et = gsl_complex_abs2(gsl_matrix_complex_get(operator_product, 2,0));
+             long double tot_P = P_ee + P_em + P_et;
+             //cout << "___antes___" << tot_P << endl;
+
+             scale_complex_matrix(operator_product, gsl_complex_rect(1.,0.), 1./sqrt(tot_P) );
+           }
+
+           //Determinant unitarity
+          if(det_corr){
+            gsl_complex detU = gsl_complex_add(gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 0, 0),gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 1),gsl_matrix_complex_get(operator_product, 2, 2)), gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 2), gsl_matrix_complex_get(operator_product, 2, 1)))),gsl_complex_mul(gsl_matrix_complex_get(operator_product, 0, 1),gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 0),gsl_matrix_complex_get(operator_product, 2, 2)), gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 2), gsl_matrix_complex_get(operator_product, 2, 0))))),gsl_complex_mul(gsl_matrix_complex_get(operator_product, 0, 2),gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 0),gsl_matrix_complex_get(operator_product, 2, 1)), gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 1), gsl_matrix_complex_get(operator_product, 2, 0)))));
+
       }
-
-     //Probability unitarity
-
-     if(prob_corr){
-       long double P_ee = gsl_complex_abs2(gsl_matrix_complex_get(operator_product, 0,0));
-       long double P_em = gsl_complex_abs2(gsl_matrix_complex_get(operator_product, 1,0));
-       long double P_et = gsl_complex_abs2(gsl_matrix_complex_get(operator_product, 2,0));
-       long double tot_P = P_ee + P_em + P_et;
-       //cout << "___antes___" << tot_P << endl;
-
-       scale_complex_matrix(operator_product, gsl_complex_rect(1.,0.), 1./sqrt(tot_P) );
-     }
-
-     //Determinant unitarity
-    if(det_corr){
-      gsl_complex detU = gsl_complex_add(gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 0, 0),gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 1),gsl_matrix_complex_get(operator_product, 2, 2)), gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 2), gsl_matrix_complex_get(operator_product, 2, 1)))),gsl_complex_mul(gsl_matrix_complex_get(operator_product, 0, 1),gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 0),gsl_matrix_complex_get(operator_product, 2, 2)), gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 2), gsl_matrix_complex_get(operator_product, 2, 0))))),gsl_complex_mul(gsl_matrix_complex_get(operator_product, 0, 2),gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 0),gsl_matrix_complex_get(operator_product, 2, 1)), gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 1), gsl_matrix_complex_get(operator_product, 2, 0)))));
-
-    }
-
       //Free memory.
       gsl_matrix_complex_free(operator_product_copy);
 	    gsl_matrix_complex_free(iter_operator);
@@ -504,7 +505,7 @@ void calculateProbabilities(){
   myfile.open ("probsTest.csv");
 
 	for(i=0;i<N;i++){
-		myfile << EnergyLins[i]*1e-3 << "," << Probabilities[i][0] << "," << Probabilities[i][1] << "," << Probabilities[i][2] << endl;
+		myfile << EnergyLins[i] << "," << Probabilities[i][0] << "," << Probabilities[i][1] << "," << Probabilities[i][2] << endl;
 		//cout << EnergyLins[i] << "," << Probabilities[i] << endl;
 	}
  //Write file with potential values.
@@ -514,7 +515,7 @@ void calculateProbabilities(){
   double coord = coord_init;
   while(coord<coord_end){
     coord += step_len;
-    potentialfile << fig_1_density(coord) << endl;
+    potentialfile << sun_density(coord) << endl;
   }
   potentialfile.close();
 
