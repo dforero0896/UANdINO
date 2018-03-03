@@ -24,8 +24,8 @@ elif ohlsson:
 elif real:
     dM32 = 2.45e-3
     dm21=7.53e-5
-    theta1 = 0.78539816339744839;
-    theta2 = 0.1454258194533693;
+    theta1 = 0.78539816339744839
+    theta2 = 0.1454258194533693
     theta3 = 0.5872523687443223;
 # U matrix Elements
 Ue1 = np.cos(theta2)*np.cos(theta3)
@@ -38,6 +38,11 @@ Ut1=np.sin(theta1)*np.sin(theta3)-np.sin(theta2)*np.cos(theta1)*np.cos(theta3)
 Ut2=-np.sin(theta1)*np.cos(theta3)-np.sin(theta2)*np.sin(theta3)*np.cos(theta1)
 Ut3=np.cos(theta1)*np.cos(theta2)
 CKM = np.matrix([[Ue1, Ue2, Ue3], [Umu1, Umu2, Umu3], [Ut1, Ut2, Ut3]])
+
+def sun_rho(r):
+  return (200.)*np.exp(-np.abs(r)/66000); #g/cm^3
+
+
 def sun_density(r):
     '''Returns density of the sun when given a coordinate r from it's center.'''
     x = 1.972e-16
@@ -90,7 +95,7 @@ def fig_6_density(r):
   dist = np.abs(r-(-6371));
   return 3.8e-13*(1e-3 +dist/12742.)
 
-def density_to_potential(dty, entineutrino):
+def density_to_potential(dty, antineutrino):
     to_return = (1./np.sqrt(2))*dty*1e-3*8.96189e-47*1e9   /1.672e-27
     if antineutrino:
         return -1*to_return
@@ -162,8 +167,9 @@ def calculateOperator(neutrinoEnergy, A, L):
     summ=0
     for a in range(3):
         summ+=np.exp(-1j*L*lam[a])*(1./(3*lam[a]*lam[a]+c1))*((lam[a]*lam[a]+c1)*np.identity(3)+lam[a]*T_flav_mat+T_sq_flav_mat)
+
     summ*=phi_phase
-    
+   
     return summ
 
 def calculateProbabilities():
@@ -176,11 +182,11 @@ def calculateProbabilities():
         coord_init =0. #km
         coord_end = 6.957e5 #km
     
-    N =1000 #energy steps
-    Steps = 100 #spatial steps
+    N =10 #energy steps
+    Steps = 10000 #spatial steps
     step_len = np.abs(coord_end-coord_init)/Steps
     
-    EnergyLins = np.logspace(1, 12, N)
+    EnergyLins = np.logspace(3, 13, N)
     
     Probabilities = np.zeros([N,3])
     
@@ -189,6 +195,7 @@ def calculateProbabilities():
         coord = coord_init
         operator_product = np.identity(3)
         for k in range(Steps):
+            #density = density_to_potential(sun_rho(coord),0)
             density = sun_density(coord)
             coord+=step_len
             iter_operator = calculateOperator(energy, density, longitude_units_conversion(step_len))
@@ -216,8 +223,13 @@ def calculateProbabilities():
             
     return EnergyLins, Probabilities
 
-
+#%%
 energies, probData = calculateProbabilities()
+#%%
+
+#u =calculateOperator(1e4, 1e-13, longitude_units_conversion(100))
+#print np.matmul(u, u.H)
+#print longitude_units_conversion(100)
 #%%
 probabilities, ax = plt.subplots(2, 2, figsize=(10, 5))
 
@@ -225,7 +237,7 @@ for i in range(2):
     for k in range(2):
         ax[i,k].set_xscale('log')
         ax[i,k].set_xlabel('$E_{\\nu}$(eV)', fontsize=15)
-        ax[i,k].set_xlim(10, 1e12)
+        ax[i,k].set_xlim(1e3, 1e13)
 #ax[1,1].set_ylim(1-0.00001, 1+0.00001)
 ax[0,1].set_ylim(0,0.5)
 ax[1,0].set_ylim(0,0.5)

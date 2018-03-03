@@ -15,10 +15,10 @@ using namespace std;
 #include <fstream>
 //Constants
 //Mass differences
-double dM32 = 1e-4; //eV^2
-double dm21 = 1e-8; //eV^2
-//double dM32 = 3.2E-3; //eV^2
-//double dm21 = 0.0; //eV^2
+//double dM32 = 1e-4; //eV^2
+//double dm21 = 1e-8; //eV^2
+double dM32 = 3.2E-3; //eV^2
+double dm21 = 0.0; //eV^2
 //double dM32 = 2.45e-3;
 //double dm21 = 7.53e-5;
 //Vacuum mixing angles
@@ -33,7 +33,9 @@ gsl_matrix *CKM;
 
 //Functions
 
-
+float sun_rho(float r){
+  return (200.)*exp(-abs(r)/66000); //g/cm^3
+}
 float sun_density(float r){
   float x = 1.972e-16;
   float n0 = 245*6.022e23 ;//electrons/cm^3
@@ -76,6 +78,11 @@ float fig_6_density(float r){
   /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_6 of Ohlsonn's paper.*/
   float dist = abs(r-(-6371));
   return 3.8e-13*(1e-3 +dist/12742.);
+}
+float fig_7_density(float r){
+  /*Returns the density of the Earth given a coordinate r from it's center following the convention provided in fig_6 of Ohlsonn's paper.*/
+  float dist = abs(r-(-6371));
+  return 7.6e-14*(1e-3 +dist/12742.);
 }
 float density_to_potential(float dty, bool antineutrino){
   /*Transforms density in g/cm**3 to potential in eV*/
@@ -401,23 +408,28 @@ void calculateProbabilities(){
   CKM=gsl_matrix_alloc(3, 3);
   fill_real_matrix(CKM, Ue1, Ue2, Ue3, Umu1, Umu2, Umu3, Ut1, Ut2, Ut3);
   //Define spatial limits for the Earth in km.
-  //float coord_init = -6371.;
-  //float coord_end = 6371.;
+  bool sun = 0;
+  bool earth = 1;
+
   float coord_init = 0;
   float coord_end = 6.957e5;
-  int N=1000; //Number of energy steps.
-	int Steps=100; //Number of spatial steps.
+
+  //float coord_init = -6371.;
+  //float coord_end = 6371.;
+
+  int N=200; //Number of energy steps.
+	int Steps=100000; //Number of spatial steps.
   float step_len = abs(coord_end-coord_init)/Steps; //Longitude of each step in km.
 
   //Save a logspaced array with the energies.
 	double EnergyLins[N];
-	vector<double> exps = linspace(1, 12, N);
+	vector<double> exps = linspace(3, 13, N);
 	for(int i=0;i<N;i++){
 		EnergyLins[i]=pow(10, exps[i]);
 	}
 
 
-	omp_set_num_threads(4);//Number of threads to use.
+	omp_set_num_threads(16);//Number of threads to use.
 	int i,k;
 
 	long double Probabilities[N][3];//Array to save probabilities.
@@ -435,7 +447,7 @@ void calculateProbabilities(){
     for(k=0;k<Steps;k++){
 	  //while(coord<coord_end){
 	    double density=sun_density(coord); //eV
-      //double density = density_to_potential(sun_density(coord),0);
+      //double density = density_to_potential(sun_rho(coord),0);
       //Increase coordinate value.
       coord += step_len;
       //A matrix to store the operator for this step.

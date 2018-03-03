@@ -47,3 +47,4 @@ mv potentialTest.csv $OUT_DIR
 
 cd $OUT_DIR
 mv -f $TEMP_DIR ./
+
