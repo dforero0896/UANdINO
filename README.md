@@ -14,3 +14,5 @@ It also relies on GSL library.
 + uandino_v02: Reproduces *all* figures of reference 1. Need A LOT (100k) steps to converge to a solution for figure 8, thus, it takes a lot of time.
 + uandino_py: Python implementation of the algorithm. Converges, with less steps, to the same result as v02 (1k). But still takes a lot of time to do so.
 + uandino_m: Matlab implementation. VERY fast but extremely sensitive to numerical errors, specially regarding the neutrino energy, it breaks fast at low energies.
+
+The key to convergence is apparently the step length, the smaller the better. This means using more steps to cover a given distance and, therefore, more computing time. This should be a problem noticeable in large distances such as the solar radius, but maybe not in the Earth's diameter.
