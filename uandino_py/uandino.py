@@ -182,8 +182,8 @@ def calculateProbabilities():
         coord_init =0. #km
         coord_end = 6.957e5 #km
     
-    N =10 #energy steps
-    Steps = 10000 #spatial steps
+    N =20 #energy steps
+    Steps = 20000 #spatial steps
     step_len = np.abs(coord_end-coord_init)/Steps
     
     EnergyLins = np.logspace(3, 13, N)

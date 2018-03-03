@@ -8,11 +8,15 @@ This program is based on the calculations done by Ohlsson and Snellman in
 It also relies on GSL library.
 
 2. *Galassi, M., Davies, J., Theiler, J., Gough, B., Jungman, G., Alken, P., … Ulerich, R. (2017). GNU Scientific Library Release 2.4. Retrieved from https://www.gnu.org/software/gsl/doc/latex/gsl-ref.pdf*
+
+Solar neutrino oscillations reference is
+
+3. *Kuo, T. ., & Pantaleone, J. (1989). Neutrino oscillations in matter. Reviews of Modern Physics, 61(October), 937–979. https://doi.org/https://doi.org/10.1103/RevModPhys.61.937*
 ## Version
 
 + uandino_v01: Reproduces figures 1-5 from reference 1.
 + uandino_v02: Reproduces *all* figures of reference 1. Need A LOT (100k) steps to converge to a solution for figure 8, thus, it takes a lot of time.
-+ uandino_py: Python implementation of the algorithm. Converges, with less steps, to the same result as v02 (1k). But still takes a lot of time to do so.
++ uandino_py: Python implementation of the algorithm. Converges, with less steps, to the same result as v02 (1k). But still takes a lot of time to do so. This implementation seems to be able to reproduce the solar neutrino oscillations from reference 3, but 10k steps have to be used wiith just 10 energies.
 + uandino_m: Matlab implementation. VERY fast but extremely sensitive to numerical errors, specially regarding the neutrino energy, it breaks fast at low energies.
 
 The key to convergence is apparently the step length, the smaller the better. This means using more steps to cover a given distance and, therefore, more computing time. This should be a problem noticeable in large distances such as the solar radius, but maybe not in the Earth's diameter.
