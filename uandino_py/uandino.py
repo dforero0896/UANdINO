@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 
 #Constants
 #Mass differences and mixing angles
-kuoPantaleone=1
+kuoPantaleone=0
 ohlsson=0
-real = 0
+real = 1
 if kuoPantaleone:
     dM32 = 1e-4
     dm21 = 1e-8
@@ -150,7 +150,7 @@ def calculateOperator(neutrinoEnergy, A, L):
     
     #Eigenvalues
     #hay un error en las líneas siguientes al utilizar energías del orden de 10 eV, no obstante el cálculo de numpy funciona
-    '''
+    
     s1PlusS2 = 2*np.sqrt((-1./3)*c1)*np.cos((1./3)*np.arctan((1./c0)*np.sqrt(-c0*c0-(4./27)*c1*c1*c1)))
     s1MinusS2 = -2j*np.sqrt((-1./3)*c1)*np.sin((1./3)*np.arctan((1./c0)*np.sqrt(-c0*c0-(4./27)*c1*c1*c1)))
     lam1 = -0.5*s1PlusS2 + np.sqrt(3.)*1j*s1MinusS2/2
@@ -158,8 +158,12 @@ def calculateOperator(neutrinoEnergy, A, L):
     lam3 = s1PlusS2
     lam = [lam1, lam2, lam3]
     '''
-    lam = np.roll(np.linalg.eigvals(T_flav_mat),1)
-    #print lamr
+    lam1 = -np.sqrt((-1./3)*c1)*np.cos((1./3)*np.arctan((1./c0)*np.sqrt(-c0*c0 - (4./27)*c1*c1*c1)))+np.sqrt(-c1)*np.sin(np.arctan((1./c0)*np.sqrt(-c0*c0 - (4./27)*c1*c1*c1)))
+    lam2 = -np.sqrt((-1./3)*c1)*np.cos((1./3)*np.arctan((1./c0)*np.sqrt(-c0*c0 - (4./27)*c1*c1*c1)))-np.sqrt(-c1)*np.sin(np.arctan((1./c0)*np.sqrt(-c0*c0 - (4./27)*c1*c1*c1)))
+    lam3 = 2*np.sqrt((-1./3)*c1)*np.cos((1./3)*np.arctan((1./c0)*np.sqrt(-c0*c0 - (4./27)*c1*c1*c1)))
+    lam = [lam1, lam2, lam3]
+    print np.arctan((1./c0)*np.sqrt(-c0*c0 - (4./27)*c1*c1*c1))
+'''
     #Calculate operator
     trace_hamiltonian=0.5*E21+E32+3*neutrinoEnergy+A
     phi_phase = np.exp(-1j*L*trace_hamiltonian)
@@ -173,8 +177,8 @@ def calculateOperator(neutrinoEnergy, A, L):
     return summ
 
 def calculateProbabilities():
-    earth = 0
-    sun=1
+    earth = 1
+    sun=0
     if earth:
         coord_init = -6371. #km
         coord_end = 6371. #km
@@ -182,11 +186,11 @@ def calculateProbabilities():
         coord_init =0. #km
         coord_end = 6.957e5 #km
     
-    N =20 #energy steps
-    Steps = 20000 #spatial steps
+    N =100 #energy steps
+    Steps = 100000 #spatial steps
     step_len = np.abs(coord_end-coord_init)/Steps
     
-    EnergyLins = np.logspace(3, 13, N)
+    EnergyLins = np.logspace(1, 13, N)
     
     Probabilities = np.zeros([N,3])
     
@@ -196,12 +200,12 @@ def calculateProbabilities():
         operator_product = np.identity(3)
         for k in range(Steps):
             #density = density_to_potential(sun_rho(coord),0)
-            density = sun_density(coord)
+            density = fig_1_density(coord)
             coord+=step_len
             iter_operator = calculateOperator(energy, density, longitude_units_conversion(step_len))
             operator_product_copy = np.copy(operator_product)
             operator_product = np.matmul(iter_operator, operator_product_copy)
-            prob_corr=1
+            prob_corr=0
             unit_corr=0
             det_corr=0
             
@@ -251,6 +255,7 @@ ax[0, 0].set_ylabel('$P_{e e}$', fontsize=15)
 ax[0, 1].set_ylabel('$P_{\mu e}$', fontsize=15)
 ax[1, 0].set_ylabel('$P_{\\tau e}$', fontsize=15)
 ax[1, 1].set_ylabel('$P_{\\tau e}+P_{\mu e}+ P_{e e}$', fontsize=15)
+
 #ax[1, 1].set_ylim(1-0.01, 1+0.01)
 
 plt.tight_layout()

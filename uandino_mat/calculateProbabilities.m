@@ -9,19 +9,20 @@ elseif sun
     coord_end = 6.957e5; %km
 end
 N =100; %energy steps
-Steps = 1000; %spatial steps
+Steps = 1000000; %spatial steps
 step_len = abs(coord_end-coord_init)/Steps;
 EnergyLins = logspace(3, 13, N);
+Densities = linspace(coord_init, coord_end, Steps);
 Probabilities = zeros([N,3]);
-for i=1:N
+parfor i=1:N
     energy=EnergyLins(i);
-    coord = coord_init;
+    %coord = coord_init;
     operator_product = eye(3);
     for k=1:Steps
+        coord = Densities(k);
         %density = density_to_potential(sun_rho(coord),0);
         %fig 6 works from energies of 1e6 on.
         density = sun_density(coord);
-        coord = coord+step_len;
         iter_operator = calculateOperator(energy, density, longitude_units_conversion(step_len));
         operator_product_copy = +operator_product;
         %iter_operator*iter_operator'

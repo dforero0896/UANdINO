@@ -15,10 +15,10 @@ using namespace std;
 #include <fstream>
 //Constants
 //Mass differences
-//double dM32 = 1e-4; //eV^2
-//double dm21 = 1e-8; //eV^2
-double dM32 = 3.2E-3; //eV^2
-double dm21 = 0.0; //eV^2
+double dM32 = 1e-4; //eV^2
+double dm21 = 1e-8; //eV^2
+//double dM32 = 3.2E-3; //eV^2
+//double dm21 = 0.0; //eV^2
 //double dM32 = 2.45e-3;
 //double dm21 = 7.53e-5;
 //Vacuum mixing angles
@@ -325,10 +325,12 @@ gsl_matrix_complex calculateOperator(double neutrinoEnergy, double A, double L){
   gsl_complex s1Ms2 = gsl_complex_mul(dummy_s1Ms2, gsl_complex_rect(0., 1.));
 
   gsl_complex lam1 = gsl_complex_add(gsl_complex_mul_real(s1Ps2, -1./2.), gsl_complex_mul_real(gsl_complex_mul(gsl_complex_rect(0., 1.), s1Ms2), sqrt(3.)/2.));
+  //double lam1 = -sqrt(-(1./3)*c1)*gsl_sf_cos(GSL_REAL(atanVal))+sqrt(-c1)*gsl_sf_sin(GSL_REAL(atanVal));
 
   gsl_complex lam2 = gsl_complex_sub(gsl_complex_mul_real(s1Ps2, -1./2.), gsl_complex_mul_real(gsl_complex_mul(gsl_complex_rect(0., 1.), s1Ms2), sqrt(3.)/2.));
-
+  //double lam2 = -sqrt(-(1./3)*c1)*gsl_sf_cos(GSL_REAL(atanVal))-sqrt(-c1)*gsl_sf_sin(GSL_REAL(atanVal));
   gsl_complex lam3 = s1Ps2;
+  //double lam3 = 2*sqrt((-1./3)*c1)*gsl_sf_cos(GSL_REAL(atanVal));
 
   //cout << "Eigenvals" << endl;
   //print_complex_number(lam1);
@@ -339,6 +341,7 @@ gsl_matrix_complex calculateOperator(double neutrinoEnergy, double A, double L){
 
   //Calculate Operator Eq 46 Pre print
   double trace_hamiltonian=0.5*E21+E32+3*neutrinoEnergy+A;
+  //double trace_hamiltonian = 3*neutrinoEnergy;
   gsl_complex phi_phase = gsl_complex_polar(1., -L*trace_hamiltonian/3);
   //print_complex_number(phi_phase);
 
@@ -408,8 +411,6 @@ void calculateProbabilities(){
   CKM=gsl_matrix_alloc(3, 3);
   fill_real_matrix(CKM, Ue1, Ue2, Ue3, Umu1, Umu2, Umu3, Ut1, Ut2, Ut3);
   //Define spatial limits for the Earth in km.
-  bool sun = 0;
-  bool earth = 1;
 
   float coord_init = 0;
   float coord_end = 6.957e5;
@@ -417,8 +418,8 @@ void calculateProbabilities(){
   //float coord_init = -6371.;
   //float coord_end = 6371.;
 
-  int N=200; //Number of energy steps.
-	int Steps=100000; //Number of spatial steps.
+  int N=1000; //Number of energy steps.
+	int Steps=100; //Number of spatial steps.
   float step_len = abs(coord_end-coord_init)/Steps; //Longitude of each step in km.
 
   //Save a logspaced array with the energies.
@@ -443,7 +444,7 @@ void calculateProbabilities(){
 	  generate_real_identity(Id);
 	  copy_to_complex_from_real(Id, operator_product);
     double coord = coord_init;
-		#pragma omp parallel for private(k)
+		//#pragma omp parallel for private(k)
     for(k=0;k<Steps;k++){
 	  //while(coord<coord_end){
 	    double density=sun_density(coord); //eV

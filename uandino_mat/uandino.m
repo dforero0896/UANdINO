@@ -9,6 +9,7 @@ survival = probData(:,1);
 mixingMu = probData(:,2);
 
 
+
 plot(energies, mixingMu);
 set(gca, 'XScale', 'log')
 %%
