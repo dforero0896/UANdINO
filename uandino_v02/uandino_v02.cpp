@@ -341,7 +341,6 @@ gsl_matrix_complex calculateOperator(double neutrinoEnergy, double A, double L){
 
   //Calculate Operator Eq 46 Pre print
   double trace_hamiltonian=0.5*E21+E32+3*neutrinoEnergy+A;
-  //double trace_hamiltonian = 3*neutrinoEnergy;
   gsl_complex phi_phase = gsl_complex_polar(1., -L*trace_hamiltonian/3);
   //print_complex_number(phi_phase);
 
@@ -461,8 +460,8 @@ void calculateProbabilities(){
 	    gsl_blas_zgemm(CblasNoTrans, CblasNoTrans, gsl_complex_rect(1., 0), iter_operator, operator_product_copy, gsl_complex_rect(0., 0.),operator_product);
 
       //Corrections
-            bool prob_corr=1;
-            bool unit_corr = 1;
+            bool prob_corr=0;
+            bool unit_corr = 0;
             bool det_corr= 0;
             //Operator unitarity
             if(unit_corr){
@@ -511,6 +510,7 @@ void calculateProbabilities(){
 		Probabilities[i][1] = gsl_complex_abs2(gsl_matrix_complex_get(operator_product, 1,0));
 		Probabilities[i][2] = gsl_complex_abs2(gsl_matrix_complex_get(operator_product, 2,0));
 		//cout << EnergyLins[i] << "," << Probabilities[i][0] << "," << Probabilities[i][1] << "," << Probabilities[i][2] << endl;
+    gsl_matrix_complex_free(operator_product);
 
 	}
   //Write file with probabilities
