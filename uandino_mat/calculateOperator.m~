@@ -18,26 +18,19 @@ theta3 = deg2rad(45.);
 elseif real
 dM32 = 2.53685e-3;
 dm21=7.37e-5;
-theta1 = asin(sqrt(0.437));
-theta2 = asin(sqrt(0.0214));
-theta3 = asin(sqrt(0.297));
+theta1 = asin(sqrt(;
+theta2 = 0.1454258194533693;
+theta3 = 0.5872523687443223;
 end
-CP=0;
-if CP
-    CP_phase = pi*1.35;
-else
-    CP_phase =0;
-end
-
 %U matrix Elements
 Ue1 = cos(theta2)*cos(theta3);
 Ue2 = sin(theta3)*cos(theta2);
-Ue3 = sin(theta2)*exp(-1j*CP_phase);
-Umu1=-sin(theta3)*cos(theta1)-sin(theta1)*sin(theta2)*cos(theta3)*exp(-1j*CP_phase);
-Umu2=cos(theta1)*cos(theta3)-sin(theta1)*sin(theta2)*sin(theta3)*exp(-1j*CP_phase);
+Ue3 = sin(theta2);
+Umu1=-sin(theta3)*cos(theta1)-sin(theta1)*sin(theta2)*cos(theta3);
+Umu2=cos(theta1)*cos(theta3)-sin(theta1)*sin(theta2)*sin(theta3);
 Umu3=sin(theta1)*cos(theta2);
-Ut1=sin(theta1)*sin(theta3)-sin(theta2)*cos(theta1)*cos(theta3)*exp(-1j*CP_phase);
-Ut2=-sin(theta1)*cos(theta3)-sin(theta2)*sin(theta3)*cos(theta1)*exp(-1j*CP_phase);
+Ut1=sin(theta1)*sin(theta3)-sin(theta2)*cos(theta1)*cos(theta3);
+Ut2=-sin(theta1)*cos(theta3)-sin(theta2)*sin(theta3)*cos(theta1);
 Ut3=cos(theta1)*cos(theta2);
 CKM = [Ue1, Ue2, Ue3;Umu1, Umu2, Umu3;Ut1, Ut2, Ut3];
 

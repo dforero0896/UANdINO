@@ -228,7 +228,7 @@ def calculateProbabilities():
     return EnergyLins, Probabilities
 
 #%%
-energies, probData = calculateProbabilities()
+#energies, probData = calculateProbabilities()
 #%%
 
 #u =calculateOperator(1e4, 1e-13, longitude_units_conversion(100))

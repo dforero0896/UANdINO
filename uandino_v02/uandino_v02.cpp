@@ -15,12 +15,12 @@ using namespace std;
 #include <fstream>
 //Constants
 //Mass differences
-double dM32 = 1e-4; //eV^2
-double dm21 = 1e-8; //eV^2
+//double dM32 = 1e-4; //eV^2
+//double dm21 = 1e-8; //eV^2
 //double dM32 = 3.2E-3; //eV^2
 //double dm21 = 0.0; //eV^2
-//double dM32 = 2.45e-3;
-//double dm21 = 7.53e-5;
+double dM32 = 2.45e-3;
+double dm21 = 7.53e-5;
 //Vacuum mixing angles
 
 double thetaA = 45.; //Degrees
@@ -386,16 +386,16 @@ void calculateProbabilities(){
   /*Writes a file with energies and all three probabilities*/
 	int threads =4;
   //CKM matrix elements calculated just once.
-  ///*
+  /*
 	double theta1=deg2rad(thetaA);
 	double theta2=deg2rad(thetaB);
 	double theta3=deg2rad(thetaC);
-  //*/
-  /*
-  double theta1 = 0.78539816339744839;
+  */
+  ///*
+  double theta1 = 0.79539883018414348;
   double theta2 = 0.1454258194533693;
   double theta3 = 0.5872523687443223;
-  */
+  //*/
   Ue1 = gsl_sf_cos(theta2)*gsl_sf_cos(theta3);
   Ue2 = gsl_sf_sin(theta3)*gsl_sf_cos(theta2);
   Ue3 = gsl_sf_sin(theta2);
@@ -411,14 +411,14 @@ void calculateProbabilities(){
   fill_real_matrix(CKM, Ue1, Ue2, Ue3, Umu1, Umu2, Umu3, Ut1, Ut2, Ut3);
   //Define spatial limits for the Earth in km.
 
-  float coord_init = 0;
-  float coord_end = 6.957e5;
+  //float coord_init = 0;
+  //float coord_end = 6.957e5;
 
-  //float coord_init = -6371.;
-  //float coord_end = 6371.;
+  float coord_init = -6371.;
+  float coord_end = 6371.;
 
   int N=1000; //Number of energy steps.
-	int Steps=100; //Number of spatial steps.
+	int Steps=1000; //Number of spatial steps.
   float step_len = abs(coord_end-coord_init)/Steps; //Longitude of each step in km.
 
   //Save a logspaced array with the energies.
@@ -429,13 +429,16 @@ void calculateProbabilities(){
 	}
 
 
-	omp_set_num_threads(16);//Number of threads to use.
+	omp_set_num_threads(4);//Number of threads to use.
 	int i,k;
 
 	long double Probabilities[N][3];//Array to save probabilities.
 	//double Probabilities[N];
-	#pragma omp parallel for private(i)
+	//#pragma omp parallel for private(i)
 	for(i=0;i<N;i++){//For each energy...
+    if(i%10==0){
+      cout<< i<< endl;
+    }
 	  long double energy=EnergyLins[i];
 	  gsl_matrix *Id =gsl_matrix_alloc(3, 3);
     //A matrix to save the product of operators.
@@ -445,8 +448,11 @@ void calculateProbabilities(){
     double coord = coord_init;
 		//#pragma omp parallel for private(k)
     for(k=0;k<Steps;k++){
+      if(k%100000==0){
+        cout << k << endl;
+      }
 	  //while(coord<coord_end){
-	    double density=sun_density(coord); //eV
+	    double density=-fig_1_density(coord); //eV
       //double density = density_to_potential(sun_rho(coord),0);
       //Increase coordinate value.
       coord += step_len;
@@ -460,8 +466,8 @@ void calculateProbabilities(){
 	    gsl_blas_zgemm(CblasNoTrans, CblasNoTrans, gsl_complex_rect(1., 0), iter_operator, operator_product_copy, gsl_complex_rect(0., 0.),operator_product);
 
       //Corrections
-            bool prob_corr=0;
-            bool unit_corr = 0;
+            bool prob_corr=1;
+            bool unit_corr = 1;
             bool det_corr= 0;
             //Operator unitarity
             if(unit_corr){
