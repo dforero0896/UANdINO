@@ -423,11 +423,11 @@ void calculateProbabilities(){
   fill_real_matrix(CKM, Ue1, Ue2, Ue3, Umu1, Umu2, Umu3, Ut1, Ut2, Ut3);
   //Define spatial limits for the Earth in km.
 
-  float coord_init = 0;
-  float coord_end = 6.957e5;
+ // float coord_init = 0;
+ // float coord_end = 6.957e5;
 
-  //float coord_init = -6371.;
-  //float coord_end = 6371.;
+  float coord_init = -6371.;
+  float coord_end = 6371.;
 
   int N=200; //Number of energy steps.
 	int Steps=1000000; //Number of spatial steps.
