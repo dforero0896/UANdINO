@@ -198,11 +198,19 @@ gsl_matrix add_real_matrices(gsl_matrix *term_1, gsl_matrix *term_2){
   }
   return *term_1;
 }
-gsl_matrix_complex copy_to_complex_from_real(gsl_matrix *real, gsl_matrix_complex *container){
+void copy_to_complex_from_real(gsl_matrix *real, gsl_matrix_complex *container){
   /*Copies matrix real matrix "real" into complex matric "container".*/
   for(int i=0;i<3;i++){
     for(int k=0; k<3; k++){
       gsl_matrix_complex_set(container, i,k, gsl_complex_rect(gsl_matrix_get(real, i, k), 0));
+    }
+  }
+}
+void copy_to_real_from_real(gsl_matrix *real, gsl_matrix *container){
+  /*Copies matrix real matrix "real" into complex matric "container".*/
+  for(int i=0;i<3;i++){
+    for(int k=0; k<3; k++){
+      gsl_matrix_set(container, i,k, gsl_matrix_get(real, i, k));
     }
   }
 }
@@ -244,7 +252,7 @@ gsl_matrix_complex copy_to_complex_from_complex(gsl_matrix_complex *complex, gsl
     }
   }
 }
-gsl_matrix_complex calculateOperator(double neutrinoEnergy, double A, double L){
+void calculateOperator(double neutrinoEnergy, double A, double L, gsl_matrix_complex* matrix){
   /*Calculates the time-evolution operator for a(n) (anti)neutrino with energy "neutrinoEnergy" passing through a potential "A" and a distance "L".*/
   double E21=dm21/(2*neutrinoEnergy);
   long double E32=dM32/(2*neutrinoEnergy);
@@ -341,7 +349,8 @@ gsl_matrix_complex calculateOperator(double neutrinoEnergy, double A, double L){
 
   //Calculate Operator Eq 46 Pre print
   double trace_hamiltonian=0.5*E21+E32+3*neutrinoEnergy+A;
-  gsl_complex phi_phase = gsl_complex_polar(1., -L*trace_hamiltonian/3);
+  gsl_complex phi_phase = gsl_complex_polar(1., -L*trace_hamiltonian/3);//gsl_complex_polar(1., -L*trace_hamiltonian/3);
+
   //print_complex_number(phi_phase);
 
 
@@ -360,7 +369,8 @@ gsl_matrix_complex calculateOperator(double neutrinoEnergy, double A, double L){
     //cout << "Scaled Identity"<< endl;
     //print_real_matrix(I_term);
     gsl_matrix *T_term = gsl_matrix_alloc(3, 3);
-    *T_term = scale_real_matrix(T_flav_mat, GSL_REAL(eigenvalues[n]));
+    copy_to_real_from_real(T_flav_mat,T_term);
+    gsl_matrix_scale(T_term, GSL_REAL(eigenvalues[n]));
     gsl_matrix_add(I_term, T_term);
     //Add function stores result in first matrix given.
     gsl_matrix_add(I_term, T_sq_flav_mat);
@@ -369,18 +379,20 @@ gsl_matrix_complex calculateOperator(double neutrinoEnergy, double A, double L){
     gsl_matrix_scale(I_term, 1./(3*GSL_REAL(eigenvalues[n])*GSL_REAL(eigenvalues[n])+c1));
     gsl_matrix_complex *sum_term = gsl_matrix_complex_alloc(3, 3);
     copy_to_complex_from_real(I_term, sum_term);
-    gsl_matrix_complex_scale(sum_term, gsl_complex_polar(1., -L*GSL_REAL(eigenvalues[n])));
+    gsl_matrix_complex_scale(sum_term, gsl_complex_polar(1,-L*GSL_REAL(eigenvalues[n]) ));
     gsl_matrix_complex_scale(sum_term, phi_phase);
-    //print_complex_matrix(sum_term);
+
     gsl_matrix_complex_add(evol_operator, sum_term);
+    //print_complex_matrix(evol_operator);
+
     gsl_matrix_free(I_term);
     gsl_matrix_free(T_term);
     gsl_matrix_complex_free(sum_term);
   }
+  copy_to_complex_from_complex(evol_operator, matrix);
+  gsl_matrix_complex_free(evol_operator);
   gsl_matrix_free(T_flav_mat);
   gsl_matrix_free(T_sq_flav_mat);
-  //print_complex_matrix(evol_operator);
-  return *evol_operator;
 }
 void calculateProbabilities(){
   /*Writes a file with energies and all three probabilities*/
@@ -392,9 +404,9 @@ void calculateProbabilities(){
 	double theta3=deg2rad(thetaC);
   */
   ///*
-  double theta1 = 0.79539883018414348;
-  double theta2 = 0.1454258194533693;
-  double theta3 = 0.5872523687443223;
+  double theta1 = 0.7222;
+  double theta2 = 0.1468;
+  double theta3 = 0.5764;
   //*/
   Ue1 = gsl_sf_cos(theta2)*gsl_sf_cos(theta3);
   Ue2 = gsl_sf_sin(theta3)*gsl_sf_cos(theta2);
@@ -417,8 +429,8 @@ void calculateProbabilities(){
   float coord_init = -6371.;
   float coord_end = 6371.;
 
-  int N=1000; //Number of energy steps.
-	int Steps=1000; //Number of spatial steps.
+  int N=100; //Number of energy steps.
+	int Steps=13000; //Number of spatial steps.
   float step_len = abs(coord_end-coord_init)/Steps; //Longitude of each step in km.
 
   //Save a logspaced array with the energies.
@@ -445,29 +457,30 @@ void calculateProbabilities(){
 	  gsl_matrix_complex *operator_product = gsl_matrix_complex_alloc(3, 3);
 	  generate_real_identity(Id);
 	  copy_to_complex_from_real(Id, operator_product);
+    gsl_matrix_free(Id);
     double coord = coord_init;
 		//#pragma omp parallel for private(k)
     for(k=0;k<Steps;k++){
-      if(k%100000==0){
-        cout << k << endl;
+      //while(coord<=coord_end){
+      if(i==99){
+        cout << "---------" << k << "---------" << endl;
       }
-	  //while(coord<coord_end){
-	    double density=-fig_1_density(coord); //eV
+	    double density=fig_1_density(coord); //eV
       //double density = density_to_potential(sun_rho(coord),0);
       //Increase coordinate value.
       coord += step_len;
       //A matrix to store the operator for this step.
 	    gsl_matrix_complex *iter_operator = gsl_matrix_complex_alloc(3,3);
-	    *iter_operator=calculateOperator(energy, density, longitude_units_conversion(step_len));
+	    calculateOperator(energy, density, longitude_units_conversion(step_len),iter_operator);
 	    gsl_matrix_complex *operator_product_copy = gsl_matrix_complex_alloc(3,3);
       //Copy operator product so far.
 	    copy_to_complex_from_complex(operator_product, operator_product_copy);
       //Multiply the operator for this step and the copy. Store them in the matrix containing the whole product.
 	    gsl_blas_zgemm(CblasNoTrans, CblasNoTrans, gsl_complex_rect(1., 0), iter_operator, operator_product_copy, gsl_complex_rect(0., 0.),operator_product);
-
+/*
       //Corrections
-            bool prob_corr=1;
-            bool unit_corr = 1;
+            bool prob_corr=0;
+            bool unit_corr = 0;
             bool det_corr= 0;
             //Operator unitarity
             if(unit_corr){
@@ -502,7 +515,7 @@ void calculateProbabilities(){
           if(det_corr){
             gsl_complex detU = gsl_complex_add(gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 0, 0),gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 1),gsl_matrix_complex_get(operator_product, 2, 2)), gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 2), gsl_matrix_complex_get(operator_product, 2, 1)))),gsl_complex_mul(gsl_matrix_complex_get(operator_product, 0, 1),gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 0),gsl_matrix_complex_get(operator_product, 2, 2)), gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 2), gsl_matrix_complex_get(operator_product, 2, 0))))),gsl_complex_mul(gsl_matrix_complex_get(operator_product, 0, 2),gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 0),gsl_matrix_complex_get(operator_product, 2, 1)), gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 1), gsl_matrix_complex_get(operator_product, 2, 0)))));
 
-      }
+      }*/
       //Free memory.
       gsl_matrix_complex_free(operator_product_copy);
 	    gsl_matrix_complex_free(iter_operator);
