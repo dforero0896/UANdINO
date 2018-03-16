@@ -19,8 +19,8 @@ using namespace std;
 //double dm21 = 1e-8; //eV^2
 //double dM32 = 3.2E-3; //eV^2
 //double dm21 = 0.0; //eV^2
-double dM32 = 2.45e-3;
-double dm21 = 7.53e-5;
+double dM32 = 2.53685e-3;
+double dm21 = 7.37e-5;
 //Vacuum mixing angles
 
 double thetaA = 45.; //Degrees
@@ -429,13 +429,13 @@ void calculateProbabilities(){
   //float coord_init = -6371.;
   //float coord_end = 6371.;
 
-  int N=100; //Number of energy steps.
+  int N=200; //Number of energy steps.
 	int Steps=1000000; //Number of spatial steps.
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
   cout << step_len << endl;
   //Save a logspaced array with the energies.
 	double EnergyLins[N];
-	vector<double> exps = linspace(3, 13, N);
+	vector<double> exps = linspace(1, 13, N);
 	for(int i=0;i<N;i++){
 		EnergyLins[i]=pow(10, exps[i]);
 	}
@@ -465,7 +465,7 @@ void calculateProbabilities(){
       if(i==99){
         cout << "---------" << k << "---------" << endl;
       }
-	    double density=sun_density(coord); //eV
+	    double density=-fig_1_density(coord); //eV
       //double density = density_to_potential(sun_rho(coord),0);
       //Increase coordinate value.
       coord += step_len;
