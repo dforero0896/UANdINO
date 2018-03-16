@@ -7,10 +7,10 @@
 # For example if we need 8 intel processors and 64GB or RAM for one week in one node.
 #PBS -l nodes=1:ppn=16
 #PBS -l mem=128gb
-#PBS -l walltime=00:02:00:00
+#PBS -l walltime=00:00:20:00
 #PBS -M df.forero10@uniandes.edu.co
 #PBS -m abe
-#PBS -N sun_test
+#PBS -N 200E_anti_fig1
 #PBS -j oe
 #PBS -o v02_cluster_test.txt
 
