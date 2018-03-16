@@ -423,16 +423,16 @@ void calculateProbabilities(){
   fill_real_matrix(CKM, Ue1, Ue2, Ue3, Umu1, Umu2, Umu3, Ut1, Ut2, Ut3);
   //Define spatial limits for the Earth in km.
 
-  //float coord_init = 0;
-  //float coord_end = 6.957e5;
+  float coord_init = 0;
+  float coord_end = 6.957e5;
 
-  float coord_init = -6371.;
-  float coord_end = 6371.;
+  //float coord_init = -6371.;
+  //float coord_end = 6371.;
 
   int N=100; //Number of energy steps.
-	int Steps=13000; //Number of spatial steps.
-  float step_len = abs(coord_end-coord_init)/Steps; //Longitude of each step in km.
-
+	int Steps=1000000; //Number of spatial steps.
+  float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
+  cout << step_len << endl;
   //Save a logspaced array with the energies.
 	double EnergyLins[N];
 	vector<double> exps = linspace(3, 13, N);
@@ -441,7 +441,7 @@ void calculateProbabilities(){
 	}
 
 
-	omp_set_num_threads(4);//Number of threads to use.
+	//omp_set_num_threads(4);//Number of threads to use.
 	int i,k;
 
 	long double Probabilities[N][3];//Array to save probabilities.
@@ -465,7 +465,7 @@ void calculateProbabilities(){
       if(i==99){
         cout << "---------" << k << "---------" << endl;
       }
-	    double density=fig_1_density(coord); //eV
+	    double density=sun_density(coord); //eV
       //double density = density_to_potential(sun_rho(coord),0);
       //Increase coordinate value.
       coord += step_len;
@@ -545,9 +545,9 @@ void calculateProbabilities(){
   ofstream potentialfile;
   potentialfile.open("potentialTest.csv");
   double coord = coord_init;
-  while(coord<coord_end){
+  for(k=0;k<Steps;k++){
     coord += step_len;
-    potentialfile << sun_density(coord) << endl;
+    potentialfile << fig_1_density(coord) << endl;
   }
   potentialfile.close();
 

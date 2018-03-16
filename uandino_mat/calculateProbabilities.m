@@ -1,6 +1,6 @@
 function [x,y] = calculateProbabilities()
-earth = 0;
-sun=1;
+earth = 1;
+sun=0;
 if earth
     coord_init = -6371.; %km
     coord_end = 6371.; %km
@@ -9,9 +9,9 @@ elseif sun
     coord_end = 6.957e5; %km
 end
 N =100; %energy steps
-Steps = 1000000; %spatial steps
+Steps = 200000; %spatial steps
 step_len = abs(coord_end-coord_init)/Steps;
-EnergyLins = logspace(1, 12, N);
+EnergyLins = logspace(3, 13, N);
 Coordinates = linspace(coord_init, coord_end, Steps);
 Probabilities = zeros([N,3]);
 for i=1:N

@@ -20,7 +20,7 @@ for i in range(2):
     for k in range(2):
         ax[i,k].set_xscale('log')
         ax[i,k].set_xlabel('$E_{\\nu}$(eV)', fontsize=15)
-        ax[i,k].set_xlim(1e1, 1e11)
+        ax[i,k].set_xlim(1e1, 1e13)
 ax[1,1].set_ylim(1-0.00001, 1+0.00001)
 ax[0,1].set_ylim(0,0.5)
 ax[1,0].set_ylim(0,0.5)

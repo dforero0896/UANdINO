@@ -1,7 +1,7 @@
 function y = calculateOperator(neutrinoEnergy, A, L)
-kuoPantaleone = 1;
+kuoPantaleone = 0;
 ohlsson = 0;
-real=0;
+real=1;
 if kuoPantaleone
 dM32 =1e-4;
 dm21 = 1e-8;
@@ -25,9 +25,6 @@ dm21=7.37e-5;
 theta1 = asin(sqrt(0.437));
 theta2 = asin(sqrt(0.0214));
 theta3 = asin(sqrt(0.297));
-disp(theta1);
-disp(theta2);
-disp(theta3);
 end
 CP=0;
 if CP
