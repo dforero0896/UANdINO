@@ -429,7 +429,7 @@ void calculateProbabilities(){
   float coord_init = -6371.;
   float coord_end = 6371.;
 
-  int N=200; //Number of energy steps.
+  int N=100; //Number of energy steps.
 	int Steps=1000000; //Number of spatial steps.
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
   cout << step_len << endl;
@@ -446,11 +446,8 @@ void calculateProbabilities(){
 
 	long double Probabilities[N][3];//Array to save probabilities.
 	//double Probabilities[N];
-	//#pragma omp parallel for private(i)
+	#pragma omp parallel for private(i)
 	for(i=0;i<N;i++){//For each energy...
-    if(i%10==0){
-      cout<< i<< endl;
-    }
 	  long double energy=EnergyLins[i];
 	  gsl_matrix *Id =gsl_matrix_alloc(3, 3);
     //A matrix to save the product of operators.
@@ -461,10 +458,6 @@ void calculateProbabilities(){
     double coord = coord_init;
 		//#pragma omp parallel for private(k)
     for(k=0;k<Steps;k++){
-      //while(coord<=coord_end){
-      if(i==99){
-        cout << "---------" << k << "---------" << endl;
-      }
 	    double density=-fig_1_density(coord); //eV
       //double density = density_to_potential(sun_rho(coord),0);
       //Increase coordinate value.
@@ -545,8 +538,8 @@ void calculateProbabilities(){
   ofstream potentialfile;
   potentialfile.open("potentialTest.csv");
   double coord = coord_init;
-  for(k=0;k<Steps;k++){
-    coord += step_len;
+  for(k=0;k<Steps;k+=1000){
+    coord = coord_init + k*step_len;
     potentialfile << fig_1_density(coord) << endl;
   }
   potentialfile.close();

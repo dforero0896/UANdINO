@@ -5,14 +5,14 @@
 # the options
 # First we need to stablish the name of the queue we will utilize.
 # For example if we need 8 intel processors and 64GB or RAM for one week in one node.
-#PBS -l nodes=1:ppn=16
+#PBS -l nodes=2:ppn=32
 #PBS -l mem=128gb
 #PBS -l walltime=00:20:00:00
 #PBS -M df.forero10@uniandes.edu.co
 #PBS -m abe
-#PBS -N 200E_anti_fig1_2
+#PBS -N 100E_anti_fig1_parallel_32
 #PBS -j oe
-#PBS -o v02_cluster_test.txt
+#PBS -o out_$PBS_JOBNAME.txt
 
 # Create a temporary directory locally on the node optimizes I/O performance
 TEMP_DIR=/state/partition1/$USER/$PBS_JOBNAME.$PBS_JOBID
@@ -25,6 +25,7 @@ mkdir -p $TEMP_DIR
 mkdir -p $OUT_DIR
 cp -Rf $PBS_O_WORKDIR/uandino_v02.cpp $TEMP_DIR/.
 cp -Rf $PBS_O_WORKDIR/uandino_v02.o $TEMP_DIR/.
+cp -Rf $PBS_O_WORKDIR/plotTheThing.py $TEMP_DIR/.
 
 
 
@@ -34,16 +35,20 @@ cp -Rf $PBS_O_WORKDIR/uandino_v02.o $TEMP_DIR/.
 module load openmpi
 module load gcc
 module load libs/gsl
-
+module load anaconda/python2
 
 #Run the stuff
 cd $TEMP_DIR
 g++ -fopenmp -o uandino_v02.o uandino_v02.cpp `gsl-config --cflags --libs`
 
-./uandino_v02.o
+time ./uandino_v02.o
+
+python plotTheThing.py
+
 
 cp probsTest.csv $OUT_DIR
 cp potentialTest.csv $OUT_DIR
+
 
 cd $OUT_DIR
 mv -f $TEMP_DIR ./
