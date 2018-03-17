@@ -429,8 +429,8 @@ void calculateProbabilities(){
   float coord_init = -6371.;
   float coord_end = 6371.;
 
-  int N=1000; //Number of energy steps.
-	int Steps=100000000; //Number of spatial steps.
+  int N=100; //Number of energy steps.
+	int Steps=1000000000; //Number of spatial steps.
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
   cout << step_len << endl;
   //Save a logspaced array with the energies.
