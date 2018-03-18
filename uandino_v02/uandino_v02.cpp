@@ -432,10 +432,11 @@ void calculateProbabilities(){
   int N=100; //Number of energy steps.
 	int Steps=1000000000; //Number of spatial steps.
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
-  cout << step_len << endl;
+  cout << "each step is: " << step_len << endl;
+cout << "using " << omp_get_num_threads() << " cores" << endl; 
   //Save a logspaced array with the energies.
 	double EnergyLins[N];
-	vector<double> exps = linspace(1, 13, N);
+	vector<double> exps = linspace(-4, 7, N);
 	for(int i=0;i<N;i++){
 		EnergyLins[i]=pow(10, exps[i]);
 	}

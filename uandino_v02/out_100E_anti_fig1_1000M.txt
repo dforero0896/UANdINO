@@ -1,0 +1,9 @@
+each step is: 1.2742e-05
+using 1 cores
+
+real	481m51.146s
+user	9696m46.705s
+sys	13m32.886s
+
+
+(hpcstats) Getting modules
