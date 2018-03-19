@@ -13,7 +13,7 @@ using namespace std;
 #include<sstream>
 #include <omp.h>
 #include <fstream>
-#include </home/daniel/OneDrive/Uniandes/Tesis/Physics_Monograph/physics/earth_simul.h>
+#include "earth_simul.h"
 //Constants
 //Mass differences
 //double dM32 = 1e-4; //eV^2
@@ -85,8 +85,8 @@ float fig_7_density(float r){
   float dist = abs(r-(-6371));
   return 7.6e-14*(1e-3 +dist/12742.);
 }
-float density_to_potential(float dty, bool antineutrino){
-  /*Transforms density in g/cm**3 to potential in eV*/
+/*float density_to_potential(float dty, bool antineutrino){
+  //Transforms density in g/cm**3 to potential in eV
   float to_return = (1./sqrt(2))*dty*1e-3*8.96189e-47*1e9   /1.672e-27;
   if(antineutrino){
     return -1*to_return;
@@ -94,7 +94,8 @@ float density_to_potential(float dty, bool antineutrino){
   else{
     return to_return;
   }
-}
+}*/
+
 double longitude_units_conversion(double lon_in_km){
   /*Transforms distances in km*/
 	return lon_in_km*1e3/(1.972e-7);
@@ -543,7 +544,7 @@ void calculateProbabilities(){
   double coord = coord_init;
   for(k=0;k<Steps;k+=1000){
     coord = coord_init + k*step_len;
-    potentialfile << fig_1_density(coord) << endl;
+    potentialfile << density_to_potential(density_polynomials(coord),1) << endl;
   }
   potentialfile.close();
 
