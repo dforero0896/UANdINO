@@ -1,0 +1,113 @@
+uandino_v02.cpp:16:88: fatal error: /home/daniel/OneDrive/Uniandes/Tesis/Physics_Monograph/physics/earth_simul.h: No such file or directory
+ #include </home/daniel/OneDrive/Uniandes/Tesis/Physics_Monograph/physics/earth_simul.h>
+                                                                                        ^
+compilation terminated.
+each step is: 0.00012742
+using using using using 3232 coresusing 
+ coresusing 32using using using using using using 32using using using 32using using using using using 3232 cores
+using using using  cores32 coresusing 
+32 cores cores
+32using using 32using 32 cores
+using 3232
+
+
+ cores
+3232 cores323232using  cores32
+ cores3232 cores32
+ cores
+ cores
+using  cores
+32 cores cores323232 cores cores32
+ cores cores cores cores
+using  cores
+ cores
+ cores
+
+
+32
+32 cores
+
+32 cores
+
+ cores
+
+
+ cores
+
+using 32 cores
+using using using using using using using using using 32using using 32using using using using 32 cores
+3232using  coresusing 32 coresusing 
+32using 3232 cores
+using 32 coresusing 
+3232using  coresusing 32 cores
+ cores32 cores32
+using  cores
+32
+using 
+using 3232323232 cores cores32using using  coresusing using  cores3232 cores cores cores
+ cores3232
+
+32 cores32
+3232using  cores
+using 
+ cores
+
+32 cores cores cores
+ cores cores cores32
+ cores
+
+
+
+ cores cores
+
+
+
+ cores
+ cores
+
+
+
+using using using using using using using 32using using using using using 32using using using  cores
+32 coresusing 32using  cores
+using 3232 cores
+3232 cores
+ cores32using 
+using 32 cores
+323232using 
+ coresusing using using using 32 cores323232 cores
+3232using using using 
+ cores32using 32 cores
+using 32 cores
+ cores coresusing  cores cores323232 cores
+using 
+
+ cores cores
+32
+32 cores
+
+
+3232 cores32 cores
+3232 cores
+ cores
+
+ cores
+ cores cores
+ cores
+ cores
+ cores
+
+
+ cores
+
+using 32 cores
+using 32 cores
+using 32 coresusing 
+32 cores
+
+real	10m30.771s
+user	157m41.483s
+sys	0m0.347s
+<class 'matplotlib.figure.Figure'>
+
+
+(hpcstats) Getting modules
