@@ -13,7 +13,7 @@ using namespace std;
 #include<sstream>
 #include <omp.h>
 #include <fstream>
-#include 
+#include </home/daniel/OneDrive/Uniandes/Tesis/Physics_Monograph/physics/earth_simul.h>
 //Constants
 //Mass differences
 //double dM32 = 1e-4; //eV^2
@@ -461,7 +461,7 @@ void calculateProbabilities(){
     double coord = coord_init;
 		//#pragma omp parallel for private(k)
     for(k=0;k<Steps;k++){
-	    double density=-fig_1_density(coord); //eV
+	    double density=density_to_potential(density_polynomials(coord),1); //eV
       //double density = density_to_potential(sun_rho(coord),0);
       //Increase coordinate value.
       coord += step_len;
