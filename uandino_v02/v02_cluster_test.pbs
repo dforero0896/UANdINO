@@ -5,12 +5,12 @@
 # the options
 # First we need to stablish the name of the queue we will utilize.
 # For example if we need 8 intel processors and 64GB or RAM for one week in one node.
-#PBS -l nodes=1:ppn=64
+#PBS -l nodes=3:ppn=32
 #PBS -l mem=128gb
 #PBS -l walltime=00:20:00:00
 #PBS -M df.forero10@uniandes.edu.co
 #PBS -m abe
-#PBS -N real_earth_diameter_test_100E_100MS_64ppn_1n
+#PBS -N real_earth_diameter_test_100E_100MS_32ppn_1n
 #PBS -j oe
 #PBS -o out_$PBS_JOBNAME.txt
 
