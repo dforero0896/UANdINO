@@ -43,7 +43,7 @@ plt.savefig('probPlot.png', dpi=300)
 
 newfig = plt.figure()
 pathData = np.loadtxt('potentialTest.csv')
-plt.plot(pathData, 'ob')
+plt.plot(pathData[:,0], pathData[:,1], 'ob')
 plt.gcf()
 #plt.gca().set_yscale('log')
 plt.savefig('potentialPlot.png', dpi=300)
