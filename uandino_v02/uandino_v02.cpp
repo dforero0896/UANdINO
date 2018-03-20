@@ -542,7 +542,7 @@ void calculateProbabilities(){
   ofstream potentialfile;
   potentialfile.open("potentialTest.csv");
   double coord = coord_init;
-  for(k=0;k<Steps;k+=100){
+  for(k=0;k<Steps;k+=1000){
     coord = coord_init + k*step_len;
     potentialfile << coord <<","<< density_to_potential(density_polynomials(coord),1) << endl;
   }

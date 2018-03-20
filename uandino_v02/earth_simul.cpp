@@ -119,7 +119,8 @@ float get_r(float x, float y){
 
 
 float density_polynomials(float radius){
-    float x = float(abs(radius))/6371.;
+    radius = float(abs(radius));
+    float x = radius/6371.;
     //inner core
     if( radius<= 1221.5){
         return 13.0885-8.8381*x*x;}
