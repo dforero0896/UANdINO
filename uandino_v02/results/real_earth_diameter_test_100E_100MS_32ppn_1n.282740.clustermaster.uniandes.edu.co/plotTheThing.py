@@ -38,7 +38,7 @@ p1=plot(probData)
 normalize(probData)
 p2=plot(probData)
 #plt.gcf()
-print type(p1)
+
 plt.savefig('probPlot.png', dpi=300)
 
 newfig = plt.figure()
