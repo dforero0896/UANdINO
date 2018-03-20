@@ -1,0 +1,109 @@
+each step is: 0.012742
+using using using using using 3232 coresusing 
+ cores
+using using using 32 coresusing 
+using using using using using using using using using 32using using 32using using 32 cores32
+ coresusing using 32 coresusing 3232 cores32
+ cores32 cores32 coresusing 32323232 cores32using  cores
+32using 
+ cores
+
+32 cores
+ cores32
+3232
+ cores cores
+32using 
+ cores
+ cores32 cores32
+ cores32 cores cores
+using  cores
+
+ cores32 coresusing 
+
+ cores
+
+32
+
+32
+ cores32
+ cores32
+ cores
+ cores
+ cores
+
+using using using using using using using using 323232using using using 32using  cores
+using  cores
+32using 32using using using using using using  coresusing using using 32 cores
+using using 32using  cores
+32 cores cores32 cores
+3232using using 32323232 cores
+using 32using  cores32
+32
+3232 cores
+using 3232 cores
+ cores cores3232 cores
+ cores
+ cores
+32 cores cores cores
+32 cores
+ cores3232
+ cores cores
+
+32
+
+ cores
+
+ cores
+32 cores
+using 32 cores
+ cores
+
+
+ cores
+ cores
+ cores
+
+using using using using using 3232using 32using  coresusing 
+using 32using 32 coresusing 
+using 32 cores
+using using  cores
+32using 32using using 32using using using using using using 32 cores
+using 32 cores cores
+ cores
+using using 32 cores
+32 cores
+using 32using 32 cores cores
+using 32 cores3232using  cores3232323232 cores32 cores cores
+32
+
+32 cores coresusing  coresusing 
+32 cores
+32 cores
+32
+32 cores cores
+ cores
+
+3232
+ cores
+ cores cores
+ cores
+
+ cores
+ cores
+
+
+ cores
+
+
+using 32 cores
+using using 32 cores32 coresusing 
+
+32 cores
+
+real	0m6.376s
+user	1m28.824s
+sys	0m0.295s
+<class 'matplotlib.figure.Figure'>
+
+
+(hpcstats) Getting modules
