@@ -1,0 +1,118 @@
+cp: cannot stat `/hpcfs/home/df.forero10/Tesis/UANdINO/uandino_v02/uandino_v02.o': No such file or directory
+each step is: 0.00012742
+using using using using using using using using using using using using using 32using 32using 32 cores32 cores
+using using using 3232using 32using using using 3232using 
+3232using 3232using using 32 cores cores
+32 cores
+using  cores32using 323232 cores cores32using using 323232 cores32 cores cores cores
+
+ cores
+ coresusing 
+ cores cores
+ cores32 cores
+
+
+
+
+
+ cores32
+3232 cores cores
+323232using 
+
+ cores cores cores cores
+ cores
+ cores cores
+
+
+ cores
+32 cores
+
+
+ cores
+ cores
+
+
+using using using using using using using using using using using using 32 cores32
+ coresusing 3232using 32using 32using using using using using using 
+using using using 3232 coresusing 
+3232using  cores
+ cores323232 cores
+3232 cores coresusing 
+using using using 32 cores cores
+32323232 cores32
+ cores32
+ coresusing 
+
+ cores
+ cores32 cores32
+ cores cores32 cores
+32 cores32 cores
+using  cores32 cores cores cores32
+
+
+ cores
+ cores
+32
+ cores32 cores
+
+
+
+
+
+ cores
+
+
+32 cores
+ cores
+using using using 32using using using using using using 3232using using using using 32using 32 coresusing 32 cores
+32 cores
+using  cores
+using 32using using  cores
+using 32using 32using using using using using 32 cores
+using using 32 cores
+32 cores
+using using 3232using 32 cores
+32using 32 cores
+ cores cores32 cores
+3232 cores
+3232 cores
+3232 cores3232 cores cores cores
+
+
+
+32 cores cores
+ cores
+32 cores32
+ cores
+32 cores cores
+
+ cores cores
+ cores
+32
+ cores
+
+
+ cores
+
+
+ cores
+using using 3232 coresusing 
+32 cores
+using  cores32
+ cores
+
+real	10m39.257s
+user	151m14.306s
+sys	0m20.787s
+<class 'matplotlib.figure.Figure'>
+Traceback (most recent call last):
+  File "plotTheThing.py", line 45, in <module>
+    pathData = np.loadtxt('potentialTest.csv')
+  File "/lustre/apps/anaconda/2/lib/python2.7/site-packages/numpy/lib/npyio.py", line 1024, in loadtxt
+    items = [conv(val) for (conv, val) in zip(converters, vals)]
+  File "/lustre/apps/anaconda/2/lib/python2.7/site-packages/numpy/lib/npyio.py", line 725, in floatconv
+    return float(x)
+ValueError: invalid literal for float(): -6371,-1.61094e-13
+
+
+(hpcstats) Getting modules
