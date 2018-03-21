@@ -106,7 +106,7 @@ vector<double> linspace(double min, double max, int arraylen){
   /*Returns a vector of doubles of len arraylen whose elements are linearly spaced from min to max*/
   vector<double> to_return;
   to_return.reserve(arraylen);
-	double step=(max-min)/arraylen;
+	double step=double(max-min)/arraylen;
 	for(int i=0; i<=arraylen; i++){
 		to_return.push_back(min+i*step);
 	}
@@ -432,14 +432,14 @@ void calculateProbabilities(){
 	int Steps=100000000; //Number of spatial steps.
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
   cout << "each step is: " << step_len << endl;
- /* //Save a logspaced array with the energies.
+ //Save a logspaced array with the energies.
 	double EnergyLins[N];
-	vector<double> exps = linspace(1, 13, N);
+	vector<double> exps = linspace(3, 12, N);
 	for(int i=0;i<N;i++){
 		EnergyLins[i]=pow(10, exps[i]);
 	}
-*/
-  vector<double> EnergyLins = linspace(100, 1e13, N);
+
+  //vector<double> EnergyLins = linspace(100, 1e13, N);
 
 	//omp_set_num_threads(4);//Number of threads to use.
 	int i,k;
