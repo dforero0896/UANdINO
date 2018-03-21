@@ -24,8 +24,8 @@ def plot(data):
 		ax[i,k].xaxis.set_major_formatter(mtick.FormatStrFormatter('%.1e'))
 		ax[i,k].locator_params(axis='x', nbins=5)
 	#ax[1,1].set_ylim(1-0.00001, 1+0.00001)
-	ax[0,1].set_ylim(0,0.5)
-	ax[1,0].set_ylim(0,0.5)
+	ax[0,1].set_ylim(0,1)
+	ax[1,0].set_ylim(0,1)
 	ax[0,0].set_ylim(0,1)
 	plt.tight_layout()
 	return probabilities
