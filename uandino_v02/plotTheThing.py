@@ -2,6 +2,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+def normalize(data):
+	tot = data[:,1]+data[:,2]+data[:,3]
+	data[:,1]/=tot
+	data[:,2]/=tot
+	data[:,3]/=tot
 
 
 probData=np.loadtxt('probsTest.csv', delimiter=',', dtype=float)
@@ -31,8 +36,8 @@ plt.gcf()
 plt.savefig('probPlot.png', dpi=300)
 
 newfig = plt.figure()
-pathData = np.loadtxt('potentialTest.csv')
-plt.plot(pathData, 'ob')
+pathData = np.loadtxt('potentialTest.csv', delimiter=',', dtype=float)
+plt.plot(pathData[:,0], pathData[:,1])
 plt.gcf()
 #plt.gca().set_yscale('log')
 plt.savefig('potentialPlot.png', dpi=300)
