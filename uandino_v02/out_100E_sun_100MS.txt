@@ -1,109 +1,109 @@
 cp: cannot stat `/hpcfs/home/df.forero10/Tesis/UANdINO/uandino_v02/uandino_v02.o': No such file or directory
 each step is: 0.006957
-using using using using using using using using using using using 32 cores
-using 32 coresusing 3232using using using using using 32 cores
-using using 32 coresusing 
+using using using using using using using using using using 32using 32 coresusing 
+32 coresusing using 32 coresusing 
+32323232 cores3232using  coresusing using 32using using using using 32 cores32 cores
 32 cores
- cores
+32 cores
+using 32 cores32 coresusing 32
+
+using using 
 3232 cores
-using using 32 cores cores
-using 32 cores32323232 cores
-using 32using 
-32using 3232using  cores
-
- cores
-32 coresusing  cores cores3232
-32using 
- cores cores cores
-323232 cores
-32
-using  cores cores
-32using 32323232 cores
- cores
- cores
- cores
-
-
+32 cores
+32using 32using 32 cores
+ cores cores cores coresusing 
 
  cores cores
- cores
- cores
+32using 32using 32 cores cores
 
 
- cores
- cores
-using using using using using using using using 32using 3232using using 32 coresusing 
-using using using 32 cores32using  coresusing using 32 cores32 cores
- coresusing 32 cores
-32 cores32 coresusing  cores
 
-using 32323232using using using 
-32 cores
+ cores cores coresusing 32 cores cores
 
-323232 coresusing 
-using 
-using  cores
-using 3232 cores cores32 cores cores
-32 cores cores cores
+
+
+
+3232 cores cores
+
+
+32
  cores
-32using 
 
-32 cores
 32 cores cores
+
+
+using using using using using using using 32using using using using using 3232using using 32using using using 32 coresusing using 3232 cores
+using 32 cores
+ cores
+using  cores
+using 
+32 cores32 cores
+
+using using 32 cores cores
+using using 32using 32 cores
+323232 cores
+ coresusing using  cores
 32
-using 32 cores
-32 cores
-
-
- cores
-
-
-32 cores
-
- cores
  cores
 using 32 cores
+32 cores
+32 cores
+32 cores
+32 cores
+ cores
+32 cores
+32 cores
 using 32 cores
-using using using 3232using  coresusing using using using using 32using using using using 32using using 32 cores3232
-using 3232using  cores32using  cores
 32 cores
 32 cores
-using 32 cores32using 3232
- cores cores32 cores
-using  cores
+32 cores
+32 cores
 
+32 cores
+ cores
+using 32 cores
+ cores
+32 cores
+using using using using 32using using using using using using using using 32using 32 cores coresusing 32
+using using using  coresusing using 32 cores
 
- cores coresusing using 
-32 coresusing using 32 cores cores
-using  cores
+using using using using 32 cores
+32 cores
+using 32 cores3232using using using 32using 
+using 3232using 3232using  cores
+32 cores32
+32 cores cores
+32 cores32323232using 3232 cores3232 cores cores
+ cores cores cores
+ cores
  cores32
-using  coresusing using  coresusing 32 cores
+
+
+ cores
+ cores32
+ cores
+ cores cores cores32
+
+ cores cores
+
+
+
+ cores
+
+3232 cores
+ cores
+
+
+ cores
+
+using 32 coresusing 
 32 cores
-3232
-32
-32
-32
-
- cores
-using  cores32 cores32
- cores
- cores
- cores
-32 cores
-
-32 cores
- cores
-
-
-using 32 cores
-using 32 cores
-using 32 cores
 using 32 cores
 using 32 cores
 
-real	9m59.444s
-user	148m20.380s
-sys	0m6.978s
+real	11m43.395s
+user	152m39.784s
+sys	0m4.311s
 
 
 (hpcstats) Getting modules
