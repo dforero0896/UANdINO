@@ -10,6 +10,7 @@ def normalize(data):
 
 
 probData=np.loadtxt('probsTest.csv', delimiter=',', dtype=float)
+normalize(probData)
 probabilities, ax = plt.subplots(2, 2, figsize=(10, 5))
 ax[0, 0].plot(probData[:,0], probData[:,1])
 ax[0, 1].plot(probData[:,0], probData[:,2])

@@ -10,6 +10,7 @@ def normalize(data):
 
 
 probData=np.loadtxt('probsTest.csv', delimiter=',', dtype=float)
+normalize(probData)
 probabilities, ax = plt.subplots(2, 2, figsize=(10, 5))
 ax[0, 0].plot(probData[:,0], probData[:,1])
 ax[0, 1].plot(probData[:,0], probData[:,2])
@@ -25,7 +26,7 @@ for i in range(2):
     for k in range(2):
         ax[i,k].set_xscale('log')
         ax[i,k].set_xlabel('$E_{\\nu}$(eV)', fontsize=15)
-        ax[i,k].set_xlim(1e1, 1e13)
+        ax[i,k].set_xlim(1e4, 1e11)
 ax[1,1].set_ylim(1-0.00001, 1+0.00001)
 ax[0,1].set_ylim(0,0.5)
 ax[1,0].set_ylim(0,0.5)
