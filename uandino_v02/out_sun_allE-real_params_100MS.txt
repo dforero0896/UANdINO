@@ -1,0 +1,17 @@
+40700
+
+
+20
+80
+50
+30
+10
+60
+90
+
+real	6m31.377s
+user	43m25.933s
+sys	4m48.518s
+
+
+(hpcstats) Getting modules

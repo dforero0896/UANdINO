@@ -424,14 +424,14 @@ void calculateProbabilities(){
   fill_real_matrix(CKM, Ue1, Ue2, Ue3, Umu1, Umu2, Umu3, Ut1, Ut2, Ut3);
   //Define spatial limits for the Earth in km.
 
-  float coord_init = 0;
-  float coord_end = 6.957e5;
+//  float coord_init = 0;
+//  float coord_end = 6.957e5;
 
-//  float coord_init = -6371.;
-//  float coord_end = 6371.;
+  float coord_init = -6371.;
+  float coord_end = 6371.;
 
   int N=100; //Number of energy steps.
-	int Steps=1000000000; //Number of spatial steps.
+	int Steps=1000000; //Number of spatial steps.
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
 
   //Save a logspaced array with the energies.
@@ -450,7 +450,8 @@ void calculateProbabilities(){
 	long double Probabilities[N][3];//Array to save probabilities.
 	//double Probabilities[N];
 	#pragma omp parallel for private(i,k)
-  	for(i=0;i<N;i++){//For each energy...
+  
+	for(i=0;i<N;i++){//For each energy...
     if(i%10==0){
       cout<< i<< endl;
     }
