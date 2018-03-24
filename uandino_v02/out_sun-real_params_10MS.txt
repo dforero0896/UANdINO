@@ -1,0 +1,6 @@
+0
+
+
+(hpcstats) Getting modules
+/etc/bashrc: line 90: 64638 Terminated              /var/spool/torque/mom_priv/jobs/285483.clustermaster.uniandes.edu.co.SC
+=>> PBS: job killed: walltime 72015 exceeded limit 72000
