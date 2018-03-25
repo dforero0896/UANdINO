@@ -11,6 +11,7 @@ def normalize(data):
 
 probData=np.loadtxt('probsTest.csv', delimiter=',', dtype=float)
 probabilities, ax = plt.subplots(2, 2, figsize=(10, 5))
+normalize(probData)
 ax[0, 0].plot(probData[:,0], probData[:,1])
 ax[0, 1].plot(probData[:,0], probData[:,2])
 ax[1, 0].plot(probData[:,0], probData[:,3])

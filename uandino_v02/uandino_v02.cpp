@@ -404,7 +404,7 @@ void calculateProbabilities(){
 	double theta2=deg2rad(thetaB);
 	double theta3=deg2rad(thetaC);
   */
-//  /*
+  ///*
   double theta1 = 0.7222;
   double theta2 = 0.1468;
   double theta3 = 0.5764;
@@ -430,8 +430,17 @@ void calculateProbabilities(){
 //  float coord_init = -6371.;
 //  float coord_end = 6371.;
 
+<<<<<<< HEAD
+  int N=1000; //Number of energy steps.
+	int Steps=100; //Number of spatial steps.
+=======
   int N=100; //Number of energy steps.
+<<<<<<< HEAD
 	int Steps=1000000000; //Number of spatial steps.
+=======
+	int Steps=10000000; //Number of spatial steps.
+>>>>>>> 7b6f8bceb0e74f259f1b56e8c7368754f37345a3
+>>>>>>> 17a33f3c4985fd8f128f0eeeb26445f5504f3ba0
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
 
   //Save a logspaced array with the energies.
@@ -453,7 +462,15 @@ void calculateProbabilities(){
 	long double Probabilities[N][3];//Array to save probabilities.
 	//double Probabilities[N];
 	#pragma omp parallel for private(i,k)
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+=======
+>>>>>>> d1796967b593cc5a49d13250ccf39e87aa93ced1
+	for(i=0;i<N;i++){//For each energy...
+=======
   	for(i=0;i<N;i++){//For each energy...
+>>>>>>> 7b6f8bceb0e74f259f1b56e8c7368754f37345a3
     if(i%10==0){
       cout<< i<< endl;
     }
