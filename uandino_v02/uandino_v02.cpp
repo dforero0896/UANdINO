@@ -435,18 +435,22 @@ void calculateProbabilities(){
 	int Steps=100; //Number of spatial steps.
 =======
   int N=100; //Number of energy steps.
+<<<<<<< HEAD
+	int Steps=1000000000; //Number of spatial steps.
+=======
 	int Steps=10000000; //Number of spatial steps.
 >>>>>>> 7b6f8bceb0e74f259f1b56e8c7368754f37345a3
+>>>>>>> 17a33f3c4985fd8f128f0eeeb26445f5504f3ba0
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
 
-/*  //Save a logspaced array with the energies.
+  //Save a logspaced array with the energies.
 	double EnergyLins[N];
 	vector<double> exps = linspace(3, 13, N);
 	for(int i=0;i<N;i++){
 		EnergyLins[i]=pow(10, exps[i]);
 	}
-*/
- vector<double> EnergyLins = linspace(0,13e6,N);
+
+// vector<double> EnergyLins = linspace(100,13e6,N);
   vector<double> Density;
   Density.reserve(Steps);
   for(int k = 0; k<Steps;k++){
