@@ -424,25 +424,28 @@ void calculateProbabilities(){
   fill_real_matrix(CKM, Ue1, Ue2, Ue3, Umu1, Umu2, Umu3, Ut1, Ut2, Ut3);
   //Define spatial limits for the Earth in km.
 
-//  float coord_init = 0;
-//  float coord_end = 6.957e5;
+  float coord_init = 0;
+  float coord_end = 6.957e5;
 
-  float coord_init = -6371.;
-  float coord_end = 6371.;
+//  float coord_init = -6371.;
+//  float coord_end = 6371.;
 
   int N=100; //Number of energy steps.
-	int Steps=1000000; //Number of spatial steps.
+	int Steps=10000000; //Number of spatial steps.
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
 
-  //Save a logspaced array with the energies.
+/*  //Save a logspaced array with the energies.
 	double EnergyLins[N];
 	vector<double> exps = linspace(3, 13, N);
 	for(int i=0;i<N;i++){
 		EnergyLins[i]=pow(10, exps[i]);
 	}
-  double Density[Steps];
+*/
+ vector<double> EnergyLins = linspace(0,13e6,N);
+  vector<double> Density;
+  Density.reserve(Steps);
   for(int k = 0; k<Steps;k++){
-    Density[k] = sun_density(coord_init + k*step_len);
+    Density.push_back(sun_density(coord_init + k*step_len));
   }
 
 	int i,k;
@@ -450,8 +453,7 @@ void calculateProbabilities(){
 	long double Probabilities[N][3];//Array to save probabilities.
 	//double Probabilities[N];
 	#pragma omp parallel for private(i,k)
-  
-	for(i=0;i<N;i++){//For each energy...
+  	for(i=0;i<N;i++){//For each energy...
     if(i%10==0){
       cout<< i<< endl;
     }
@@ -465,7 +467,7 @@ void calculateProbabilities(){
     double coord = coord_init;
 		//#pragma omp parallel for private(k)
     for(k=0;k<Steps;k++){
-	    double density=Density[k]; //eV
+	    double density=sun_density(coord); //eV
       //double density = density_to_potential(sun_rho(coord),0);
       //Increase coordinate value.
       coord += step_len;

@@ -445,7 +445,7 @@ void calculateProbabilities(){
   vector<double> Density;
   Density.reserve(Steps);
   for(int k = 0; k<Steps;k++){
-    Density.push_back(sun_density(coord_init + k*step_len));
+    Density.push_back(sun_density(coord_init + k*step_len);
   }
 
 	int i,k;
