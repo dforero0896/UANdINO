@@ -10,7 +10,7 @@
 #PBS -l walltime=00:20:00:00
 #PBS -M df.forero10@uniandes.edu.co
 #PBS -m abe
-#PBS -N sun_allE-real_params_100MS
+#PBS -N sun_0-13e6-real_params_10MS
 #PBS -j oe
 #PBS -o out_$PBS_JOBNAME.txt
 

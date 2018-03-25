@@ -1,0 +1,16 @@
+/var/spool/torque/mom_priv/jobs/285583.clustermaster.uniandes.edu.co.SC: line 44: 42649 Segmentation fault      ./uandino_v02.o
+
+real	0m0.057s
+user	0m0.003s
+sys	0m0.017s
+Traceback (most recent call last):
+  File "plotTheThing.py", line 12, in <module>
+    probData=np.loadtxt('probsTest.csv', delimiter=',', dtype=float)
+  File "/lustre/apps/anaconda/2/lib/python2.7/site-packages/numpy/lib/npyio.py", line 896, in loadtxt
+    fh = iter(open(fname, 'U'))
+IOError: [Errno 2] No such file or directory: 'probsTest.csv'
+cp: cannot stat `probsTest.csv': No such file or directory
+cp: cannot stat `potentialTest.csv': No such file or directory
+
+
+(hpcstats) Getting modules
