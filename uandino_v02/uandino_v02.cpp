@@ -18,10 +18,10 @@ using namespace std;
 //Mass differences
 //double dM32 = 1e-4; //eV^2
 //double dm21 = 1e-8; //eV^2
-//double dM32 = 3.2E-3; //eV^2
-//double dm21 = 0.0; //eV^2
-double dM32 = 2.45e-3;
-double dm21 = 7.53e-5;
+double dM32 = 3.2E-3; //eV^2
+double dm21 = 0.0; //eV^2
+//double dM32 = 2.45e-3;
+//double dm21 = 7.53e-5;
 //Vacuum mixing angles
 
 double thetaA = 45.; //Degrees
@@ -399,16 +399,16 @@ void calculateProbabilities(){
   /*Writes a file with energies and all three probabilities*/
 	int threads =4;
   //CKM matrix elements calculated just once.
-/*
+///*
 	double theta1=deg2rad(thetaA);
 	double theta2=deg2rad(thetaB);
 	double theta3=deg2rad(thetaC);
-  */
-//  /*
+  //*/
+  /*
   double theta1 = 0.7222;
   double theta2 = 0.1468;
   double theta3 = 0.5764;
-//  */
+  */
   Ue1 = gsl_sf_cos(theta2)*gsl_sf_cos(theta3);
   Ue2 = gsl_sf_sin(theta3)*gsl_sf_cos(theta2);
   Ue3 = gsl_sf_sin(theta2);
@@ -430,8 +430,8 @@ void calculateProbabilities(){
   float coord_init = -6371.;
   float coord_end = 6371.;
 
-  int N=100; //Number of energy steps.
-	int Steps=1000000; //Number of spatial steps.
+  int N=1000; //Number of energy steps.
+	int Steps=100; //Number of spatial steps.
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
 
   //Save a logspaced array with the energies.
@@ -446,7 +446,7 @@ void calculateProbabilities(){
 
 	long double Probabilities[N][3];//Array to save probabilities.
 	//double Probabilities[N];
-	//#pragma omp parallel for private(i)
+	#pragma omp parallel for private(i,k)
 	for(i=0;i<N;i++){//For each energy...
     if(i%10==0){
       cout<< i<< endl;
@@ -473,39 +473,7 @@ void calculateProbabilities(){
 	    copy_to_complex_from_complex(operator_product, operator_product_copy);
       //Multiply the operator for this step and the copy. Store them in the matrix containing the whole product.
 	    gsl_blas_zgemm(CblasNoTrans, CblasNoTrans, gsl_complex_rect(1., 0), iter_operator, operator_product_copy, gsl_complex_rect(0., 0.),operator_product);
-/*
-      //Corrections
-            bool prob_corr=0;
-            bool unit_corr = 0;
-            bool det_corr= 0;
-            //Operator unitarity
-            if(unit_corr){
-              gsl_matrix_complex *unit_check = gsl_matrix_complex_alloc(3,3);
-              gsl_matrix_complex *operator_product_copy_notr = gsl_matrix_complex_alloc(3,3);
-              copy_to_complex_from_complex(operator_product, operator_product_copy_notr);
-              gsl_matrix_complex *operator_product_copy_tr = gsl_matrix_complex_alloc(3,3);
-              copy_to_complex_from_complex(operator_product, operator_product_copy_tr);
-              gsl_blas_zgemm(CblasNoTrans, CblasConjTrans, gsl_complex_rect(1., 0), operator_product_copy_notr, operator_product_copy_tr, gsl_complex_rect(0., 0.),unit_check);
-              double detId= GSL_REAL(gsl_matrix_complex_get(unit_check, 2, 2))*GSL_REAL(gsl_matrix_complex_get(unit_check, 1, 1))*GSL_REAL(gsl_matrix_complex_get(unit_check, 0, 0));
-              double the_one = sqrt(detId);
-              scale_complex_matrix(operator_product, gsl_complex_rect(1,0.), 1./the_one );
-              gsl_matrix_complex_free(operator_product_copy_notr);
-              gsl_matrix_complex_free(operator_product_copy_tr);
-              gsl_matrix_complex_free(unit_check);
-            }
-           //Probability unitarity
-           if(prob_corr){
-             long double P_ee = gsl_complex_abs2(gsl_matrix_complex_get(operator_product, 0,0));
-             long double P_em = gsl_complex_abs2(gsl_matrix_complex_get(operator_product, 1,0));
-             long double P_et = gsl_complex_abs2(gsl_matrix_complex_get(operator_product, 2,0));
-             long double tot_P = P_ee + P_em + P_et;
-             //cout << "___antes___" << tot_P << endl;
-             scale_complex_matrix(operator_product, gsl_complex_rect(1.,0.), 1./sqrt(tot_P) );
-           }
-           //Determinant unitarity
-          if(det_corr){
-            gsl_complex detU = gsl_complex_add(gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 0, 0),gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 1),gsl_matrix_complex_get(operator_product, 2, 2)), gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 2), gsl_matrix_complex_get(operator_product, 2, 1)))),gsl_complex_mul(gsl_matrix_complex_get(operator_product, 0, 1),gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 0),gsl_matrix_complex_get(operator_product, 2, 2)), gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 2), gsl_matrix_complex_get(operator_product, 2, 0))))),gsl_complex_mul(gsl_matrix_complex_get(operator_product, 0, 2),gsl_complex_sub(gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 0),gsl_matrix_complex_get(operator_product, 2, 1)), gsl_complex_mul(gsl_matrix_complex_get(operator_product, 1, 1), gsl_matrix_complex_get(operator_product, 2, 0)))));
-      }*/
+
       //Free memory.
       gsl_matrix_complex_free(operator_product_copy);
 	    gsl_matrix_complex_free(iter_operator);
