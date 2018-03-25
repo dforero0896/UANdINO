@@ -18,10 +18,10 @@ using namespace std;
 //Mass differences
 //double dM32 = 1e-4; //eV^2
 //double dm21 = 1e-8; //eV^2
-double dM32 = 3.2E-3; //eV^2
-double dm21 = 0.0; //eV^2
-//double dM32 = 2.45e-3;
-//double dm21 = 7.53e-5;
+//double dM32 = 3.2E-3; //eV^2
+//double dm21 = 0.0; //eV^2
+double dM32 = 2.45e-3;
+double dm21 = 7.53e-5;
 //Vacuum mixing angles
 
 double thetaA = 45.; //Degrees
@@ -399,16 +399,16 @@ void calculateProbabilities(){
   /*Writes a file with energies and all three probabilities*/
 	int threads =4;
   //CKM matrix elements calculated just once.
-///*
+/*
 	double theta1=deg2rad(thetaA);
 	double theta2=deg2rad(thetaB);
 	double theta3=deg2rad(thetaC);
-  //*/
-  /*
+  */
+  ///*
   double theta1 = 0.7222;
   double theta2 = 0.1468;
   double theta3 = 0.5764;
-  */
+//  */
   Ue1 = gsl_sf_cos(theta2)*gsl_sf_cos(theta3);
   Ue2 = gsl_sf_sin(theta3)*gsl_sf_cos(theta2);
   Ue3 = gsl_sf_sin(theta2);
@@ -460,7 +460,7 @@ void calculateProbabilities(){
 	#pragma omp parallel for private(i,k)
 <<<<<<< HEAD
 <<<<<<< HEAD
-  
+
 =======
 >>>>>>> d1796967b593cc5a49d13250ccf39e87aa93ced1
 	for(i=0;i<N;i++){//For each energy...
