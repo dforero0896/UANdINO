@@ -432,7 +432,7 @@ void calculateProbabilities(){
 
 
 	int N=100; //Number of energy steps.
-	int Steps=10000000; //Number of spatial steps.
+	int Steps=1000000; //Number of spatial steps.
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
 
   //Save a logspaced array with the energies.
