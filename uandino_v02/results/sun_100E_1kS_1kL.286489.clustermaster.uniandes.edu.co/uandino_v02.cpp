@@ -431,7 +431,7 @@ void calculateProbabilities(){
 
 
   int N=100; //Number of energy steps.
-	int Steps=10000; //Number of spatial steps.
+	int Steps=1000; //Number of spatial steps.
   int leap = int(Steps/1000);
   //int lim = int(log(leap)/log(2.));
   int lim =leap -1;
