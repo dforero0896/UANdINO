@@ -1,0 +1,14 @@
+70400
+
+
+50
+80
+20
+10
+90
+30
+60
+
+
+(hpcstats) Getting modules
+/etc/bashrc: line 90: 24917 Terminated              /var/spool/torque/mom_priv/jobs/286485.clustermaster.uniandes.edu.co.SC
