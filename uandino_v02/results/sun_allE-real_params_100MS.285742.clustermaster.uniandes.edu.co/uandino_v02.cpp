@@ -397,13 +397,14 @@ void calculateOperator(double neutrinoEnergy, double A, double L, gsl_matrix_com
 }
 void calculateProbabilities(){
   /*Writes a file with energies and all three probabilities*/
+	int threads =4;
   //CKM matrix elements calculated just once.
 /*
 	double theta1=deg2rad(thetaA);
 	double theta2=deg2rad(thetaB);
 	double theta3=deg2rad(thetaC);
   */
-  ///*
+//  /*
   double theta1 = 0.7222;
   double theta2 = 0.1468;
   double theta3 = 0.5764;
@@ -429,12 +430,8 @@ void calculateProbabilities(){
 //  float coord_init = -6371.;
 //  float coord_end = 6371.;
 
-
   int N=100; //Number of energy steps.
-  long long int Steps=100000000000; //Number of spatial steps.
-  long long int leap = pow(2,33);
-  int lim = int(log(leap)/log(2.));
-//  int lim =leap -1;
+	int Steps=1000000000; //Number of spatial steps.
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
 
   //Save a logspaced array with the energies.
@@ -443,21 +440,22 @@ void calculateProbabilities(){
 	for(int i=0;i<N;i++){
 		EnergyLins[i]=pow(10, exps[i]);
 	}
-/*
+
 // vector<double> EnergyLins = linspace(100,13e6,N);
   vector<double> Density;
   Density.reserve(Steps);
   for(int k = 0; k<Steps;k++){
     Density.push_back(sun_density(coord_init + k*step_len));
   }
-*/
+
 	int i,k;
+
 	long double Probabilities[N][3];//Array to save probabilities.
 	//double Probabilities[N];
 	#pragma omp parallel for private(i,k)
-	for(i=0;i<N;i++){//For each energy...
+  	for(i=0;i<N;i++){//For each energy...
     if(i%10==0){
-      cout<< "Energy = " << i<< endl;
+      cout<< i<< endl;
     }
 	  long double energy=EnergyLins[i];
 	  gsl_matrix *Id =gsl_matrix_alloc(3, 3);
@@ -468,35 +466,16 @@ void calculateProbabilities(){
     gsl_matrix_free(Id);
     double coord = coord_init;
 		//#pragma omp parallel for private(k)
-    for(k=0;k<Steps;k+=leap){
-      //cout << "Step = " << k << endl;
-      coord = coord_init + k*step_len;
+    for(k=0;k<Steps;k++){
 	    double density=sun_density(coord); //eV
-
+      //double density = density_to_potential(sun_rho(coord),0);
       //Increase coordinate value.
+      coord += step_len;
       //A matrix to store the operator for this step.
 	    gsl_matrix_complex *iter_operator = gsl_matrix_complex_alloc(3,3);
 	    calculateOperator(energy, density, longitude_units_conversion(step_len),iter_operator);
-      gsl_matrix_complex *iter_operator_copy = gsl_matrix_complex_alloc(3,3);
-      copy_to_complex_from_complex(iter_operator, iter_operator_copy);
-      int n;
-      for(n=0;n<lim;n++){
-
-        gsl_matrix_complex *operator_n = gsl_matrix_complex_alloc(3,3);
-        //Copy this iteration's operator.
-        copy_to_complex_from_complex(iter_operator, operator_n);
-        gsl_matrix_complex *operator_nn = gsl_matrix_complex_alloc(3,3);
-        //Copy this iteration's operator a second time.
-        copy_to_complex_from_complex(iter_operator, operator_nn);
-        //Multiply the operator for this step by itself 'leap' times.
-        gsl_blas_zgemm(CblasNoTrans, CblasNoTrans, gsl_complex_rect(1., 0), operator_nn, operator_n, gsl_complex_rect(0., 0.),iter_operator);
-
-        gsl_matrix_complex_free(operator_n);
-        gsl_matrix_complex_free(operator_nn);
-      }
-      gsl_matrix_complex_free(iter_operator_copy);
+	    gsl_matrix_complex *operator_product_copy = gsl_matrix_complex_alloc(3,3);
       //Copy operator product so far.
-      gsl_matrix_complex *operator_product_copy = gsl_matrix_complex_alloc(3,3);
 	    copy_to_complex_from_complex(operator_product, operator_product_copy);
       //Multiply the operator for this step and the copy. Store them in the matrix containing the whole product.
 	    gsl_blas_zgemm(CblasNoTrans, CblasNoTrans, gsl_complex_rect(1., 0), iter_operator, operator_product_copy, gsl_complex_rect(0., 0.),operator_product);
@@ -530,9 +509,9 @@ void calculateProbabilities(){
   ofstream potentialfile;
   potentialfile.open("potentialTest.csv");
   double coord = coord_init;
-  for(int k = 0;k<Steps;k+=leap){
-    coord = coord_init+k*step_len;
-    potentialfile <<coord<<','<< sun_density(coord) << endl;
+  for(int k = 0;k<Steps;k+=10000){
+    coord += step_len;
+    potentialfile <<coord<<','<< fig_1_density(coord) << endl;
   }
   potentialfile.close();
 

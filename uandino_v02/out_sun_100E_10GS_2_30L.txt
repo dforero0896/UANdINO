@@ -1,0 +1,8 @@
+Energy = Energy = Energy = 40700
+
+
+
+
+(hpcstats) Getting modules
+=>> PBS: job killed: walltime 180045 exceeded limit 180000
+/etc/bashrc: line 90: 36487 Terminated              /var/spool/torque/mom_priv/jobs/286504.clustermaster.uniandes.edu.co.SC

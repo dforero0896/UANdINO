@@ -431,8 +431,8 @@ void calculateProbabilities(){
 
 
   int N=100; //Number of energy steps.
-  long long int Steps=100000000000; //Number of spatial steps.
-  long long int leap = pow(2,33);
+	int Steps=100000000; //Number of spatial steps.
+  int leap = int(pow(2,17));
   int lim = int(log(leap)/log(2.));
 //  int lim =leap -1;
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.

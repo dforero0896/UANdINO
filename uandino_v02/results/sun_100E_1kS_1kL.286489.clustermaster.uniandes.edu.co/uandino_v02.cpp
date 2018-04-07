@@ -431,10 +431,10 @@ void calculateProbabilities(){
 
 
   int N=100; //Number of energy steps.
-  long long int Steps=100000000000; //Number of spatial steps.
-  long long int leap = pow(2,33);
-  int lim = int(log(leap)/log(2.));
-//  int lim =leap -1;
+	int Steps=1000; //Number of spatial steps.
+  int leap = int(Steps/1000);
+  //int lim = int(log(leap)/log(2.));
+  int lim =leap -1;
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
 
   //Save a logspaced array with the energies.
@@ -487,7 +487,7 @@ void calculateProbabilities(){
         copy_to_complex_from_complex(iter_operator, operator_n);
         gsl_matrix_complex *operator_nn = gsl_matrix_complex_alloc(3,3);
         //Copy this iteration's operator a second time.
-        copy_to_complex_from_complex(iter_operator, operator_nn);
+        copy_to_complex_from_complex(iter_operator_copy, operator_nn);
         //Multiply the operator for this step by itself 'leap' times.
         gsl_blas_zgemm(CblasNoTrans, CblasNoTrans, gsl_complex_rect(1., 0), operator_nn, operator_n, gsl_complex_rect(0., 0.),iter_operator);
 

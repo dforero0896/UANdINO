@@ -1,6 +1,0 @@
-0
-10
-
-
-(hpcstats) Getting modules
-=>> PBS: job killed: walltime 72010 exceeded limit 72000

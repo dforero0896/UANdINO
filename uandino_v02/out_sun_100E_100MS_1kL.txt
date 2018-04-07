@@ -1,0 +1,17 @@
+Energy = Energy = Energy = 700
+
+40
+Energy = 80
+Energy = 50
+Energy = 20
+Energy = 30
+Energy = 60
+Energy = 90
+Energy = 10
+
+real	44m16.761s
+user	1001m41.330s
+sys	124m29.761s
+
+
+(hpcstats) Getting modules
