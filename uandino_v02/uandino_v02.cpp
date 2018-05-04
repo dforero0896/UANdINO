@@ -423,32 +423,34 @@ void calculateProbabilities(){
   fill_real_matrix(CKM, Ue1, Ue2, Ue3, Umu1, Umu2, Umu3, Ut1, Ut2, Ut3);
   //Define spatial limits for the Earth in km.
 
-  float coord_init = 0;
-  float coord_end = 6.957e5;
+//  float coord_init = 0;
+//  float coord_end = 6.957e5;
 
-//  float coord_init = -6371.;
-//  float coord_end = 6371.;
+  float coord_init = -6371.;
+  float coord_end = 6371.;
 
 
-  int N=100; //Number of energy steps.
-  long long int Steps=100000000000; //Number of spatial steps.
-  long long int leap = pow(2,33);
+  int N=1000; //Number of energy steps.
+  long long int Steps=100000000; //Number of spatial steps.
+  long long int leap = pow(2,20);
   int lim = int(log(leap)/log(2.));
 //  int lim =leap -1;
   float step_len = float(abs(coord_end-coord_init))/Steps; //Longitude of each step in km.
 
   //Save a logspaced array with the energies.
+
 	double EnergyLins[N];
 	vector<double> exps = linspace(3, 13, N);
 	for(int i=0;i<N;i++){
 		EnergyLins[i]=pow(10, exps[i]);
 	}
+
+// vector<double> EnergyLins = linspace(1000,13e6,N);
 /*
-// vector<double> EnergyLins = linspace(100,13e6,N);
   vector<double> Density;
   Density.reserve(Steps);
   for(int k = 0; k<Steps;k++){
-    Density.push_back(sun_density(coord_init + k*step_len));
+    Density.push_back(fig_1_density(coord_init + k*step_len));
   }
 */
 	int i,k;
@@ -471,7 +473,7 @@ void calculateProbabilities(){
     for(k=0;k<Steps;k+=leap){
       //cout << "Step = " << k << endl;
       coord = coord_init + k*step_len;
-	    double density=sun_density(coord); //eV
+	    double density=fig_1_density(coord); //eV
 
       //Increase coordinate value.
       //A matrix to store the operator for this step.
@@ -532,7 +534,7 @@ void calculateProbabilities(){
   double coord = coord_init;
   for(int k = 0;k<Steps;k+=leap){
     coord = coord_init+k*step_len;
-    potentialfile <<coord<<','<< sun_density(coord) << endl;
+    potentialfile <<coord<<','<< fig_1_density(coord) << endl;
   }
   potentialfile.close();
 
