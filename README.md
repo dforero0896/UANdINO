@@ -18,7 +18,7 @@ Solar neutrino oscillations reference is
 + **uandino_py** and **uandino_mat** have no *skipping* scheme implemented and are located in [**legacy**](https://github.com/dforero0896/UANdINO/tree/master/legacy) folder.
 
 ### uandino_v02
-Reproduces *all* figures of reference 1. Additionally, it is optimized through an scheme that I called *skipping*, explained in my Thesis' document, [**here**](https://github.com/dforero0896/Physics_Monograph/blob/master/physics/document/Phys_Thesis_Document.pdf). It still shows problems at low energies, nevertheless, the working threshold for the program has been moved back, significantly, to (anti)neutrino energies of about 10^3 eV. Nonetheless, the software has been tested with solar neutrinos, details on this are, again, in the [here](https://github.com/dforero0896/Physics_Monograph/blob/master/physics/document/Phys_Thesis_Document.pdf).
+Reproduces *all* figures of reference 1. Additionally, it is optimized through an scheme that I called *skipping*, explained in my Thesis' document, [**here**](https://github.com/dforero0896/Physics_Monograph/blob/master/physics/document/Phys_Thesis_Document.pdf). It still shows problems at low energies, nevertheless, the working threshold for the program has been moved back, significantly, to (anti)neutrino energies of about 10^3 eV. Nonetheless, the software has been tested with solar neutrinos, details on this are, again, [here](https://github.com/dforero0896/Physics_Monograph/blob/master/physics/document/Phys_Thesis_Document.pdf).
 
 #### Running uandino:
 Files `uandino.h` and `uandino.cpp` are the header and implementation files for UANdINO, therefore, they should both be located in your working directory and imported in your C++ code.
