@@ -16,12 +16,12 @@ Solar neutrino oscillations reference is
 
 + **uandino_v01**: Reproduces figures 1-5 from reference 1.
 + **uandino_py** and **uandino_mat** have no *skipping* scheme implemented and are located in [**legacy**](https://github.com/dforero0896/UANdINO/tree/master/legacy) folder.
-
-### uandino_v02
-Reproduces *all* figures of reference 1. Additionally, it is optimized through an scheme that I called *skipping*, explained in my Thesis' document, [**here**](https://github.com/dforero0896/Physics_Monograph/blob/master/physics/document/Phys_Thesis_Document.pdf). It still shows problems at low energies, nevertheless, the working threshold for the program has been moved back, significantly, to (anti)neutrino energies of about 10^3 eV. Nonetheless, the software has been tested with solar neutrinos, details on this are, again, [here](https://github.com/dforero0896/Physics_Monograph/blob/master/physics/document/Phys_Thesis_Document.pdf).
++ **uandino_v02**: Reproduces *all* figures of reference 1.
+### uandino_v03
+Optimized through an scheme that I called *skipping*, explained in my Thesis' document, [**here**](https://github.com/dforero0896/Physics_Monograph/blob/master/physics/document/Phys_Thesis_Document.pdf). It still shows problems at low energies, nevertheless, the working threshold for the program has been moved back, significantly, to (anti)neutrino energies of about 10^3 eV. Nonetheless, the software has been tested with solar neutrinos, details on this are, again, [here](https://github.com/dforero0896/Physics_Monograph/blob/master/physics/document/Phys_Thesis_Document.pdf).
 
 #### Running uandino:
-Files `uandino.h` and `uandino.cpp` are the header and implementation files for UANdINO, therefore, they should both be located in your working directory and imported in your C++ code.
+Files `uandino.h` and `uandino.cpp` are the header and implementation files for UANdINO, therefore, they should both be located in your working directory and imported in your C++ code when intended to be used.
 
 You may want to edit the implementation file and declare a suitable `path_resolution` variable. This defines how big the spatial step will be, the smaller, the better, if you want the program to work at low energies. For high energies, a bigger step, maybe tenths of km, should be ok. Keep in mind that if the spatial step is very small, the program will take a very long time. For small steps, you should provide some sort of `leap` greater than one, this will cause the program to skip the calculations of the operator when the density remains *almost* constant, which will be true in the small-step scale. I you do not wish to use the skipping scheme because you are using high energies, please provide `leap=1` to the function `calculateProbabilities` on calling.
 
